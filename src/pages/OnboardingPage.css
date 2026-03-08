@@ -1,0 +1,403 @@
+.onboarding {
+  min-height: 100vh;
+  background: #0f0f13;
+  color: #e8e8e8;
+}
+
+.onboarding-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 24px 120px;
+}
+
+.onboarding-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.onboarding-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.onboarding-sub {
+  color: #999;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ── Progress ─────────────────────────────────────────── */
+.onboarding-progress {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 48px;
+  padding: 0 8px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+  flex: 0 0 auto;
+}
+
+.progress-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #17171f;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .progress-dot {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #fff;
+}
+
+.progress-step.done .progress-dot {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #fff;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.progress-step.active .progress-label {
+  color: #c084fc;
+}
+
+.progress-step.done .progress-label {
+  color: #86efac;
+}
+
+.progress-line {
+  position: absolute;
+  top: 18px;
+  left: 40px;
+  right: 40px;
+  height: 2px;
+  background: #333;
+  z-index: 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #7c3aed;
+  transition: width 0.4s ease;
+}
+
+/* ── Steps ────────────────────────────────────────────── */
+.onboarding-step {
+  min-height: 340px;
+}
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.step-desc {
+  color: #999;
+  margin: 0 0 28px;
+  font-size: 0.95rem;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Chips (Step 1: Industries) ───────────────────────── */
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid #333;
+  background: #17171f;
+  color: #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: #7c3aed;
+  color: #fff;
+}
+
+.chip.selected {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Issue Cards (Step 2) ─────────────────────────────── */
+.issue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.issue-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #333;
+  background: #17171f;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.issue-card:hover {
+  border-color: #7c3aed;
+  transform: translateY(-2px);
+}
+
+.issue-card.selected {
+  border-color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+  box-shadow: 0 0 0 1px #7c3aed;
+}
+
+.issue-icon {
+  font-size: 1.6rem;
+}
+
+.issue-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.issue-desc {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* ── Company Select (Step 3) ──────────────────────────── */
+.company-search-wrap {
+  margin-bottom: 20px;
+}
+
+.company-search-input {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #17171f;
+  color: #e8e8e8;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.company-search-input:focus {
+  border-color: #7c3aed;
+}
+
+.company-search-input::placeholder {
+  color: #666;
+}
+
+.popular-label {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.search-status {
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.company-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.company-select-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #17171f;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.company-select-card:hover {
+  border-color: #7c3aed;
+}
+
+.company-select-card.selected {
+  border-color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+}
+
+.company-select-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.company-select-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.company-select-industry {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.company-select-check {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #666;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.company-select-card.selected .company-select-check {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #fff;
+}
+
+/* ── Value Cards (Step 4) ─────────────────────────────── */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.value-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #17171f;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.value-card:hover {
+  border-color: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.value-card.selected {
+  border-color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+  box-shadow: 0 0 0 1px #7c3aed;
+}
+
+.value-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.value-desc {
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* ── Navigation ───────────────────────────────────────── */
+.onboarding-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid #222;
+}
+
+.onboarding-nav-right {
+  display: flex;
+  gap: 12px;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 600px) {
+  .onboarding-inner {
+    padding: 32px 16px 100px;
+  }
+
+  .onboarding-title {
+    font-size: 1.5rem;
+  }
+
+  .issue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .company-select-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-label {
+    display: none;
+  }
+}

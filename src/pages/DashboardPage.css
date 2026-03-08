@@ -114,3 +114,120 @@
   padding: 3rem;
   color: #404040;
 }
+
+/* ── Followed Companies ─────────────────────────────── */
+.dash-follow-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+.dash-follow-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  min-width: 280px;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.dash-follow-card:hover {
+  border-color: #7c3aed;
+  transform: translateY(-2px);
+}
+
+.dash-follow-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-follow-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-follow-meta {
+  font-size: 0.78rem;
+  color: #666;
+}
+
+.dash-follow-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.dash-follow-count {
+  font-size: 0.72rem;
+  color: #555;
+}
+
+/* ── Recommended Grid ───────────────────────────────── */
+.dash-rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.dash-rec-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.dash-rec-card:hover {
+  border-color: #7c3aed;
+  transform: translateY(-2px);
+}
+
+.dash-rec-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dash-rec-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dash-rec-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #888;
+  border-color: transparent;
+}
+.btn-ghost:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}

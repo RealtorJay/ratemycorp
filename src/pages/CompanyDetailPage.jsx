@@ -8,6 +8,7 @@ import CompanyLogo from '../components/CompanyLogo'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import StockWidget from '../components/StockWidget'
+import FollowButton from '../components/FollowButton'
 import './CompanyDetailPage.css'
 
 const RATING_CATEGORIES = [
@@ -115,9 +116,12 @@ export default function CompanyDetailPage() {
               <span className="detail-review-count">{company.review_count} reviews</span>
             </div>
           </div>
-          <button className="btn btn-primary" onClick={handleWriteReview}>
-            + Submit a Report
-          </button>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <button className="btn btn-primary" onClick={handleWriteReview}>
+              + Submit a Report
+            </button>
+            <FollowButton companyId={company.id} />
+          </div>
         </div>
       </div>
 

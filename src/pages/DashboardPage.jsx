@@ -2,17 +2,52 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import ReviewCard from '../components/ReviewCard'
+import CompanyLogo from '../components/CompanyLogo'
+import Stars from '../components/Stars'
+import FollowButton from '../components/FollowButton'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import './DashboardPage.css'
 
 export default function DashboardPage() {
-  const { user } = useAuth()
+  const { user, followedCompanies, preferences } = useAuth()
   const navigate = useNavigate()
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
+  const [followedDetails, setFollowedDetails] = useState([])
+  const [recommended, setRecommended] = useState([])
 
   useEffect(() => { fetchReviews() }, [user])
+
+  // Fetch followed company details
+  useEffect(() => {
+    if (!followedCompanies.length) {
+      setFollowedDetails([])
+      return
+    }
+    supabase
+      .from('companies')
+      .select('id, name, slug, industry, avg_overall, review_count, website')
+      .in('id', followedCompanies)
+      .order('name')
+      .then(({ data }) => setFollowedDetails(data || []))
+  }, [followedCompanies])
+
+  // Fetch recommended companies based on preferences
+  useEffect(() => {
+    if (!preferences?.industries?.length) {
+      setRecommended([])
+      return
+    }
+    supabase
+      .from('companies')
+      .select('id, name, slug, industry, avg_overall, review_count, website')
+      .in('industry', preferences.industries)
+      .not('id', 'in', `(${followedCompanies.length ? followedCompanies.join(',') : '00000000-0000-0000-0000-000000000000'})`)
+      .order('review_count', { ascending: false })
+      .limit(6)
+      .then(({ data }) => setRecommended(data || []))
+  }, [preferences, followedCompanies])
 
   const fetchReviews = async () => {
     if (!user) return
@@ -51,7 +86,61 @@ export default function DashboardPage() {
             <span className="dash-stat-value">{avgRating}</span>
             <span className="dash-stat-label">Avg Rating Given</span>
           </div>
+          <div className="dash-stat">
+            <span className="dash-stat-value">{followedCompanies.length}</span>
+            <span className="dash-stat-label">Following</span>
+          </div>
         </div>
+
+        {/* Followed Companies */}
+        {followedDetails.length > 0 && (
+          <div className="dash-section" style={{ marginBottom: '2.5rem' }}>
+            <div className="dash-section-header">
+              <h2 className="dash-section-title">Companies You Follow</h2>
+            </div>
+            <div className="dash-follow-scroll">
+              {followedDetails.map((c) => (
+                <Link key={c.id} to={`/companies/${c.slug}`} className="dash-follow-card">
+                  <CompanyLogo company={c} size={40} />
+                  <div className="dash-follow-info">
+                    <span className="dash-follow-name">{c.name}</span>
+                    <span className="dash-follow-meta">{c.industry}</span>
+                  </div>
+                  <div className="dash-follow-rating">
+                    <Stars rating={c.avg_overall} size="sm" />
+                    <span className="dash-follow-count">{c.review_count || 0} reviews</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Recommended */}
+        {recommended.length > 0 && (
+          <div className="dash-section" style={{ marginBottom: '2.5rem' }}>
+            <div className="dash-section-header">
+              <h2 className="dash-section-title">Recommended For You</h2>
+            </div>
+            <div className="dash-rec-grid">
+              {recommended.map((c) => (
+                <Link key={c.id} to={`/companies/${c.slug}`} className="dash-rec-card">
+                  <div className="dash-rec-top">
+                    <CompanyLogo company={c} size={32} />
+                    <div className="dash-rec-info">
+                      <span className="dash-follow-name">{c.name}</span>
+                      <span className="dash-follow-meta">{c.industry}</span>
+                    </div>
+                  </div>
+                  <div className="dash-rec-bottom">
+                    <Stars rating={c.avg_overall} size="sm" />
+                    <FollowButton companyId={c.id} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Reviews */}
         <div className="dash-section">

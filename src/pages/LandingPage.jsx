@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import Stars from '../components/Stars'
 import CompanyLogo from '../components/CompanyLogo'
+import FollowButton from '../components/FollowButton'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../context/AuthContext'
 import './LandingPage.css'
 
 const CATEGORIES = [
@@ -42,9 +44,11 @@ function scoreLabel(score) {
 }
 
 export default function LandingPage() {
+  const { user, preferences, onboardingDone } = useAuth()
   const [trending, setTrending] = useState([])
   const [ticker, setTicker] = useState([])
   const [stats, setStats] = useState({ companies: 0, reviews: 0 })
+  const [forYou, setForYou] = useState([])
 
   useEffect(() => {
     supabase
@@ -68,6 +72,22 @@ export default function LandingPage() {
       supabase.from('reviews').select('id', { count: 'exact', head: true }),
     ]).then(([co, re]) => setStats({ companies: co.count || 0, reviews: re.count || 0 }))
   }, [])
+
+  // Fetch personalized "For You" companies
+  useEffect(() => {
+    if (!user || !onboardingDone || !preferences?.industries?.length) {
+      setForYou([])
+      return
+    }
+    supabase
+      .from('companies')
+      .select('id, name, slug, industry, website, avg_overall, review_count')
+      .in('industry', preferences.industries)
+      .gt('review_count', 0)
+      .order('review_count', { ascending: false })
+      .limit(6)
+      .then(({ data }) => setForYou(data || []))
+  }, [user, onboardingDone, preferences])
 
   return (
     <div className="landing">
@@ -124,6 +144,58 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
+      )}
+
+      {/* For You (personalized, logged-in users with onboarding done) */}
+      {forYou.length > 0 && (
+        <section className="section">
+          <div className="section-inner">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">For You</h2>
+                <p className="section-sub">Companies in the industries you care about.</p>
+              </div>
+              <Link to="/companies" className="btn-ghost-muted">Browse all →</Link>
+            </div>
+            <div className="scorecard-grid">
+              {forYou.map((c) => (
+                <Link key={c.id} to={`/companies/${c.slug}`} className="scorecard">
+                  <div className="scorecard-top">
+                    <CompanyLogo name={c.name} website={c.website} size={44} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="scorecard-name">{c.name}</div>
+                      {c.industry && <div className="scorecard-industry">{c.industry}</div>}
+                    </div>
+                    <div className="scorecard-score">
+                      <span className={`scorecard-score-val ${scoreClass(c.avg_overall)}`}>
+                        {c.avg_overall > 0 ? Number(c.avg_overall).toFixed(1) : '—'}
+                      </span>
+                      <span className={`scorecard-score-label ${scoreClass(c.avg_overall)}`}>
+                        {scoreLabel(c.avg_overall)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="scorecard-footer">
+                    <Stars rating={c.avg_overall || 0} size="sm" showNumber={false} />
+                    <span className="scorecard-reviews">{c.review_count} reports</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Sign up CTA for non-logged-in users */}
+      {!user && (
+        <section className="section">
+          <div className="section-inner" style={{ textAlign: 'center', padding: '2rem 1.5rem' }}>
+            <p style={{ color: '#888', fontSize: '0.95rem', margin: '0 0 16px' }}>
+              Sign up to get personalized recommendations based on your values and interests.
+            </p>
+            <Link to="/auth?mode=signup" className="btn btn-outline">Create Free Account</Link>
+          </div>
+        </section>
       )}
 
       {/* Scorecards */}

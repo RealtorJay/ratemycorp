@@ -13,6 +13,7 @@ import ForumPostPage from './pages/ForumPostPage'
 import PoliticiansPage from './pages/PoliticiansPage'
 import PoliticianDetailPage from './pages/PoliticianDetailPage'
 import ConnectionsPage from './pages/ConnectionsPage'
+import OnboardingPage from './pages/OnboardingPage'
 
 export default function App() {
   return (
@@ -28,6 +29,10 @@ export default function App() {
           <Route path="/companies/:slug" element={<CompanyDetailPage />} />
           <Route path="/companies/:slug/forum" element={<ForumPage />} />
           <Route path="/companies/:slug/forum/:postId" element={<ForumPostPage />} />
+          <Route
+            path="/onboarding"
+            element={<ProtectedRoute skipOnboardingCheck><OnboardingPage /></ProtectedRoute>}
+          />
           <Route
             path="/companies/:slug/review"
             element={<ProtectedRoute><SubmitReviewPage /></ProtectedRoute>}
