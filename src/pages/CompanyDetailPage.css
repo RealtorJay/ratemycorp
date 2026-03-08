@@ -212,3 +212,272 @@
   color: #404040;
   gap: 1rem;
 }
+
+/* ── Leadership sidebar ── */
+.leadership-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.leadership-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #333, #1a1a1a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.leadership-detail { flex: 1; min-width: 0; }
+
+.leadership-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #e8e8e8;
+}
+
+.leadership-role {
+  font-size: 0.72rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.leadership-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  border-top: 1px solid #1a1a1a;
+}
+
+.leadership-meta-label {
+  font-size: 0.7rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.leadership-meta-value {
+  font-size: 0.82rem;
+  color: #888;
+  font-weight: 600;
+}
+
+.leadership-lobbying {
+  color: #fbbf24;
+}
+
+/* ── Political connections sidebar ── */
+.sidebar-pol-connections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sidebar-pol-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  padding: 0.3rem 0;
+  transition: opacity 0.15s;
+}
+.sidebar-pol-item:hover { opacity: 0.8; }
+
+.sidebar-pol-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  flex-shrink: 0;
+}
+
+.sidebar-pol-info { flex: 1; min-width: 0; }
+
+.sidebar-pol-name {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e8e8e8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-pol-meta {
+  display: block;
+  font-size: 0.68rem;
+  color: #404040;
+}
+
+.sidebar-pol-amount {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.sidebar-pol-viewall {
+  display: block;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #555;
+  text-decoration: none;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #1a1a1a;
+  transition: color 0.15s;
+}
+.sidebar-pol-viewall:hover { color: #fff; }
+
+/* ── Political connections main section ── */
+.detail-pol-section {
+  margin-bottom: 2rem;
+}
+
+.detail-pol-explainer {
+  font-size: 0.82rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 1.25rem;
+}
+
+.ghost-more {
+  background: none;
+  border: none;
+  font-size: 0.78rem;
+  color: #444;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: color 0.15s;
+  padding: 0;
+  text-decoration: none;
+}
+.ghost-more:hover { color: #fff; }
+
+.pol-connections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.pol-connection-card {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 14px;
+  padding: 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.pol-connection-card:hover {
+  border-color: #333;
+  transform: translateY(-1px);
+}
+
+.pol-conn-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.pol-conn-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  flex-shrink: 0;
+}
+
+.pol-conn-info { flex: 1; min-width: 0; }
+
+.pol-conn-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e8e8e8;
+}
+
+.pol-conn-party {
+  font-size: 0.72rem;
+  color: #555;
+}
+
+.pol-conn-type-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c084fc;
+  background: rgba(192,132,252,0.08);
+  border: 1px solid rgba(192,132,252,0.15);
+  border-radius: 5px;
+  padding: 0.15rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.pol-conn-details {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.pol-conn-amount {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.pol-conn-cycle {
+  font-size: 0.65rem;
+  color: #333;
+  background: #1a1a1a;
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+}
+
+.pol-conn-desc {
+  font-size: 0.78rem;
+  color: #606060;
+  line-height: 1.55;
+  margin: 0 0 0.5rem;
+}
+
+.pol-conn-why {
+  font-size: 0.72rem;
+  color: #555;
+  line-height: 1.55;
+  border-left: 2px solid rgba(192,132,252,0.25);
+  padding-left: 0.6rem;
+}
+
+.pol-conn-why-label {
+  color: #c084fc;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+}

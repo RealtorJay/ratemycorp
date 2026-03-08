@@ -17,12 +17,32 @@ const RATING_CATEGORIES = [
   { key: 'avg_scandals',         label: 'Corporate Scandals' },
 ]
 
+const PARTY_COLORS = {
+  Democrat: '#4B9CD3',
+  Republican: '#E03C3C',
+  Independent: '#888',
+}
+
+const CONNECTION_LABELS = {
+  campaign_donation:    'Campaign Donation',
+  super_pac:            'Super PAC',
+  lobbying_client:      'Lobbying Client',
+  revolving_door_from:  'Revolving Door (From)',
+  revolving_door_to:    'Revolving Door (To)',
+  board_seat:           'Board Seat',
+  stock_ownership:      'Stock Ownership',
+  family_connection:    'Family Connection',
+  bundler:              'Bundler',
+  industry_pac:         'Industry PAC',
+}
+
 export default function CompanyDetailPage() {
   const { slug } = useParams()
   const { user } = useAuth()
   const navigate = useNavigate()
   const [company, setCompany] = useState(null)
   const [reviews, setReviews] = useState([])
+  const [connections, setConnections] = useState([])
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
 
@@ -41,14 +61,22 @@ export default function CompanyDetailPage() {
     if (error || !co) { setNotFound(true); setLoading(false); return }
     setCompany(co)
 
-    const { data: revs } = await supabase
-      .from('reviews')
-      .select('*')
-      .eq('company_id', co.id)
-      .order('created_at', { ascending: false })
-      .limit(50)
+    const [revsRes, connRes] = await Promise.all([
+      supabase
+        .from('reviews')
+        .select('*')
+        .eq('company_id', co.id)
+        .order('created_at', { ascending: false })
+        .limit(50),
+      supabase
+        .from('politician_company_connections')
+        .select('*, politicians(id, slug, full_name, party, chamber, state, title, accountability_score)')
+        .eq('company_id', co.id)
+        .order('amount_cents', { ascending: false }),
+    ])
 
-    setReviews(revs || [])
+    setReviews(revsRes.data || [])
+    setConnections(connRes.data || [])
     setLoading(false)
   }
 
@@ -111,6 +139,67 @@ export default function CompanyDetailPage() {
               isPublic={company.is_public !== false}
             />
 
+            {/* Leadership */}
+            {company.ceo_name && (
+              <div className="sidebar-card">
+                <h3 className="sidebar-title">Leadership</h3>
+                <div className="leadership-info">
+                  <div className="leadership-avatar">
+                    {company.ceo_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+                  </div>
+                  <div className="leadership-detail">
+                    <div className="leadership-name">{company.ceo_name}</div>
+                    <div className="leadership-role">{company.ceo_title || 'CEO'}</div>
+                  </div>
+                </div>
+                {company.headquarters && (
+                  <div className="leadership-meta-row">
+                    <span className="leadership-meta-label">HQ</span>
+                    <span className="leadership-meta-value">{company.headquarters}</span>
+                  </div>
+                )}
+                {company.lobbying_spend && (
+                  <div className="leadership-meta-row">
+                    <span className="leadership-meta-label">Lobbying</span>
+                    <span className="leadership-meta-value leadership-lobbying">{company.lobbying_spend}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Political Connections sidebar preview */}
+            {connections.length > 0 && (
+              <div className="sidebar-card">
+                <h3 className="sidebar-title">Political Ties ({connections.length})</h3>
+                <div className="sidebar-pol-connections">
+                  {connections.slice(0, 5).map((c) => {
+                    const pol = c.politicians
+                    if (!pol) return null
+                    const partyColor = PARTY_COLORS[pol.party] || '#555'
+                    return (
+                      <Link key={c.id} to={`/politicians/${pol.slug}`} className="sidebar-pol-item">
+                        <div className="sidebar-pol-avatar" style={{ background: partyColor }}>
+                          {pol.full_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+                        </div>
+                        <div className="sidebar-pol-info">
+                          <span className="sidebar-pol-name">{pol.full_name}</span>
+                          <span className="sidebar-pol-meta">
+                            {pol.party?.[0]} · {CONNECTION_LABELS[c.connection_type] || c.connection_type}
+                          </span>
+                        </div>
+                        {c.amount_display && c.amount_display !== 'N/A' && (
+                          <span className="sidebar-pol-amount">{c.amount_display}</span>
+                        )}
+                      </Link>
+                    )
+                  })}
+                </div>
+                <Link to={`/connections?company=${slug}`} className="sidebar-pol-viewall">
+                  Explore all connections →
+                </Link>
+              </div>
+            )}
+
             {company.description && (
               <div className="sidebar-card">
                 <h3 className="sidebar-title">About</h3>
@@ -118,12 +207,67 @@ export default function CompanyDetailPage() {
               </div>
             )}
             <Link to={`/companies/${slug}/forum`} className="sidebar-forum-link">
-              💬 View Company Forum
+              View Company Forum →
             </Link>
           </aside>
 
-          {/* Reviews */}
+          {/* Main content */}
           <main className="detail-main">
+            {/* Political Connections section */}
+            {connections.length > 0 && (
+              <div className="detail-pol-section">
+                <div className="detail-main-header">
+                  <h2 className="detail-section-title">Political Connections</h2>
+                  <Link to={`/connections?company=${slug}`} className="ghost-more">Explore web →</Link>
+                </div>
+                <p className="detail-pol-explainer">
+                  These politicians have documented financial or professional ties to {company.name}.
+                  Understanding these connections reveals how policy decisions may be influenced by corporate interests.
+                </p>
+                <div className="pol-connections-grid">
+                  {connections.slice(0, 6).map((c) => {
+                    const pol = c.politicians
+                    if (!pol) return null
+                    const partyColor = PARTY_COLORS[pol.party] || '#555'
+                    return (
+                      <Link key={c.id} to={`/politicians/${pol.slug}`} className="pol-connection-card">
+                        <div className="pol-conn-header">
+                          <div className="pol-conn-avatar" style={{ background: partyColor }}>
+                            {pol.full_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+                          </div>
+                          <div className="pol-conn-info">
+                            <div className="pol-conn-name">{pol.full_name}</div>
+                            <div className="pol-conn-party">
+                              <span style={{ color: partyColor }}>{pol.party}</span>
+                              {pol.state && <span> · {pol.state}</span>}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="pol-conn-type-badge">
+                          {CONNECTION_LABELS[c.connection_type] || c.connection_type}
+                        </div>
+                        <div className="pol-conn-details">
+                          {c.amount_display && c.amount_display !== 'N/A' && (
+                            <span className="pol-conn-amount">{c.amount_display}</span>
+                          )}
+                          {c.cycle && <span className="pol-conn-cycle">{c.cycle}</span>}
+                        </div>
+                        {c.description && (
+                          <p className="pol-conn-desc">{c.description}</p>
+                        )}
+                        <div className="pol-conn-why">
+                          <span className="pol-conn-why-label">Why it matters:</span>
+                          {' '}This {c.connection_type.replace(/_/g, ' ')} means {pol.full_name} may have financial incentives
+                          affecting their votes on {company.industry?.toLowerCase() || 'industry'} policy.
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Reviews */}
             <div className="detail-main-header">
               <h2 className="detail-section-title">
                 {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}

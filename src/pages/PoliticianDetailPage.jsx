@@ -109,37 +109,65 @@ function PromiseCard({ promise }) {
   )
 }
 
-function ConnectionRow({ connection }) {
+function ConnectionRow({ connection, companyIndustry }) {
   const company = connection.companies
   if (!company) return null
+
+  const impactText = getConnectionImpact(connection.connection_type, company.name, companyIndustry)
+
   return (
-    <div className="connection-row">
-      <div className="connection-company">
-        <div className="connection-logo">
-          {company.name?.[0]?.toUpperCase()}
-        </div>
-        <div>
-          <Link to={`/companies/${company.slug}`} className="connection-company-name">
-            {company.name}
-          </Link>
-          <div className="connection-type-label">
-            {CONNECTION_LABELS[connection.connection_type] || connection.connection_type}
+    <div className="connection-row-expanded">
+      <div className="connection-row">
+        <div className="connection-company">
+          <div className="connection-logo">
+            {company.name?.[0]?.toUpperCase()}
+          </div>
+          <div>
+            <Link to={`/companies/${company.slug}`} className="connection-company-name">
+              {company.name}
+            </Link>
+            <div className="connection-type-label">
+              {CONNECTION_LABELS[connection.connection_type] || connection.connection_type}
+              {company.industry && <span className="connection-industry-tag"> · {company.industry}</span>}
+            </div>
           </div>
         </div>
+        <div className="connection-right">
+          {connection.amount_display && connection.amount_display !== 'N/A' && (
+            <span className="connection-amount">{connection.amount_display}</span>
+          )}
+          {connection.cycle && <span className="connection-cycle">{connection.cycle}</span>}
+          {connection.source_url && (
+            <a href={connection.source_url} target="_blank" rel="noreferrer" className="connection-source">
+              Source →
+            </a>
+          )}
+        </div>
       </div>
-      <div className="connection-right">
-        {connection.amount_display && connection.amount_display !== 'N/A' && (
-          <span className="connection-amount">{connection.amount_display}</span>
-        )}
-        {connection.cycle && <span className="connection-cycle">{connection.cycle}</span>}
-        {connection.source_url && (
-          <a href={connection.source_url} target="_blank" rel="noreferrer" className="connection-source">
-            Source →
-          </a>
-        )}
-      </div>
+      {impactText && (
+        <div className="connection-impact">
+          <span className="connection-impact-label">Consumer Impact:</span> {impactText}
+        </div>
+      )}
     </div>
   )
+}
+
+function getConnectionImpact(connectionType, companyName, industry) {
+  const ind = (industry || '').toLowerCase()
+  const typeExplanations = {
+    campaign_donation: `Campaign donations from ${companyName} create financial incentives that may influence votes on ${industry || 'industry'} regulation, potentially prioritizing corporate profits over consumer protection.`,
+    super_pac: `Super PAC funding from ${companyName} enables unlimited spending to support this politician's campaigns, creating powerful indirect influence over ${industry || 'industry'} policy decisions.`,
+    lobbying_client: `As a lobbying client, ${companyName} pays to directly influence this politician's legislative agenda, potentially shaping laws that affect consumers in the ${industry || 'industry'} sector.`,
+    revolving_door_from: `This politician previously worked at ${companyName}, raising questions about regulatory capture — they may favor their former employer when making ${industry || 'industry'} policy.`,
+    revolving_door_to: `This politician moved to work at ${companyName} after office, suggesting a pattern where policy decisions may have been influenced by future employment prospects.`,
+    stock_ownership: `Owning stock in ${companyName} means this politician profits when the company's value rises, creating a direct conflict of interest on ${industry || 'industry'} regulation.`,
+    board_seat: `A board seat connects this politician directly to ${companyName}'s governance, creating significant overlap between corporate strategy and public policy.`,
+    family_connection: `Family ties to ${companyName} create indirect financial relationships that may influence policy decisions affecting ${industry || 'industry'} consumers.`,
+    bundler: `As a fundraising bundler, this connection to ${companyName} represents organized campaign finance influence concentrated from the ${industry || 'industry'} sector.`,
+    industry_pac: `Industry PAC funding from the ${industry || 'industry'} sector means this politician receives coordinated financial support from companies like ${companyName}.`,
+  }
+  return typeExplanations[connectionType] || null
 }
 
 export default function PoliticianDetailPage() {
@@ -176,7 +204,7 @@ export default function PoliticianDetailPage() {
 
     const [promisesRes, connectionsRes, committeesRes, votesRes, eduRes, careerRes, familyRes, nwRes, finRes] = await Promise.all([
       supabase.from('political_promises').select('*').eq('politician_id', pol.id).order('created_at', { ascending: false }),
-      supabase.from('politician_company_connections').select('*, companies(id, slug, name, website)').eq('politician_id', pol.id).order('amount_cents', { ascending: false }),
+      supabase.from('politician_company_connections').select('*, companies(id, slug, name, website, industry, ceo_name)').eq('politician_id', pol.id).order('amount_cents', { ascending: false }),
       supabase.from('committee_assignments').select('*').eq('politician_id', pol.id).eq('is_current', true),
       supabase.from('votes').select('*').eq('politician_id', pol.id).order('vote_date', { ascending: false }).limit(20),
       supabase.from('politician_education').select('*').eq('politician_id', pol.id).order('start_year', { ascending: true }),
@@ -404,8 +432,10 @@ export default function PoliticianDetailPage() {
                       <h2 className="pol-section-title">Corporate Connections</h2>
                       <button className="ghost-more" onClick={() => setActiveTab('connections')}>View all →</button>
                     </div>
-                    <div className="connections-list">
-                      {connections.slice(0, 5).map(c => <ConnectionRow key={c.id} connection={c} />)}
+                    <div className="connections-list-enhanced">
+                      {connections.slice(0, 5).map(c => (
+                        <ConnectionRow key={c.id} connection={c} companyIndustry={c.companies?.industry} />
+                      ))}
                     </div>
                   </div>
                 )}
@@ -462,10 +492,43 @@ export default function PoliticianDetailPage() {
                   <>
                     <p className="tab-desc">
                       Documented financial and professional ties between {politician.full_name} and corporations.
-                      All entries require a source URL. FEC filings, SEC disclosures, and OpenSecrets data preferred.
+                      These connections show how corporate money flows into politics and may influence votes that affect
+                      consumers, workers, and communities. All entries require a source URL.
                     </p>
-                    <div className="connections-list">
-                      {connections.map(c => <ConnectionRow key={c.id} connection={c} />)}
+
+                    {/* Industry breakdown */}
+                    <div className="connection-industry-summary">
+                      <h3 className="pol-section-title" style={{ marginBottom: '0.75rem' }}>Industries Connected</h3>
+                      <div className="industry-tag-row">
+                        {[...new Set(connections.map(c => c.companies?.industry).filter(Boolean))].map(ind => {
+                          const count = connections.filter(c => c.companies?.industry === ind).length
+                          const total = connections
+                            .filter(c => c.companies?.industry === ind && c.amount_cents)
+                            .reduce((sum, c) => sum + (c.amount_cents || 0), 0)
+                          return (
+                            <div key={ind} className="industry-summary-tag">
+                              <span className="industry-tag-name">{ind}</span>
+                              <span className="industry-tag-count">{count} {count === 1 ? 'tie' : 'ties'}</span>
+                              {total > 0 && (
+                                <span className="industry-tag-total">{formatCents(total)}</span>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="connections-list-enhanced">
+                      {connections.map(c => (
+                        <ConnectionRow key={c.id} connection={c} companyIndustry={c.companies?.industry} />
+                      ))}
+                    </div>
+
+                    <div className="connection-cta">
+                      <Link to={`/connections?politician=${slug}`} className="btn btn-outline" style={{ marginRight: '0.75rem' }}>
+                        Explore Full Web →
+                      </Link>
+                      <button className="btn btn-primary" onClick={handleSubmitConnection}>+ Add Connection</button>
                     </div>
                   </>
                 )}
