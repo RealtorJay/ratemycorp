@@ -7,16 +7,22 @@ import { supabase } from '../lib/supabase'
 import './LandingPage.css'
 
 const CATEGORIES = [
-  { icon: '🌍', title: 'Environmental Impact', desc: 'Carbon footprint, pollution, sustainability pledges vs. reality.' },
-  { icon: '⚖️', title: 'Ethical Business', desc: 'Labor practices, supply chains, fair trade, and worker rights.' },
-  { icon: '🛡️', title: 'Consumer Trust', desc: 'Data privacy, product safety, honest pricing, and recalls.' },
-  { icon: '📰', title: 'Corporate Scandals', desc: 'Lawsuits, cover-ups, fraud, and public controversies.' },
+  { icon: '🌍', title: 'Environmental Impact', desc: 'EPA violations, carbon emissions, toxic waste, oil spills, greenwashing, and sustainability pledges vs. documented reality.' },
+  { icon: '⚖️', title: 'Ethical Business', desc: 'DOJ/OSHA violations, labor exploitation, union-busting, supply chain abuses, wage theft, and foreign bribery (FCPA).' },
+  { icon: '🛡️', title: 'Consumer Trust', desc: 'FTC actions, FDA violations, data privacy breaches, product safety recalls, deceptive pricing, and class action history.' },
+  { icon: '📰', title: 'Corporate Scandals', desc: 'Congressional investigations, DOJ criminal cases, SEC enforcement, FBI probes, and documented cover-ups.' },
 ]
 
 const STEPS = [
-  { n: '01', title: 'Search a Company', desc: 'Look up any brand to see their community ethics scorecard.' },
-  { n: '02', title: 'Read the Reports', desc: 'Browse anonymous, fact-checked reports from other consumers.' },
-  { n: '03', title: 'Spend with Values', desc: 'Make informed decisions about which companies deserve your money.' },
+  { n: '01', title: 'Search a Company', desc: 'Look up any brand to see their full ethics scorecard, sourced from DOJ, SEC, EPA, and FTC records.' },
+  { n: '02', title: 'Read the Evidence', desc: 'Browse documented reports citing real case numbers, settlement amounts, and government agency findings.' },
+  { n: '03', title: 'Spend with Values', desc: 'Make informed decisions with evidence — not PR spin — about which companies deserve your dollar.' },
+]
+
+const METHODOLOGY = [
+  { label: 'Sources', items: ['DOJ settlements & indictments', 'SEC enforcement actions', 'EPA fines & consent decrees', 'OSHA citations', 'FTC & FDA actions'] },
+  { label: 'Research', items: ['Court records & PACER', 'Congressional testimony', 'IRS tax disclosures', 'Whistleblower accounts', 'FBI & FinCEN filings'] },
+  { label: 'Scoring', items: ['1–5 scale per category', 'Weighted by severity', 'Recency factored in', 'Pattern vs. isolated incidents', 'Remediation credit'] },
 ]
 
 function scoreClass(score) {
@@ -38,21 +44,29 @@ function scoreLabel(score) {
 export default function LandingPage() {
   const [trending, setTrending] = useState([])
   const [ticker, setTicker] = useState([])
+  const [stats, setStats] = useState({ companies: 0, reviews: 0 })
 
   useEffect(() => {
     supabase
       .from('companies')
       .select('id, name, slug, industry, website, avg_overall, review_count')
+      .gt('review_count', 0)
       .order('review_count', { ascending: false })
       .limit(6)
       .then(({ data }) => setTrending(data || []))
 
     supabase
       .from('companies')
-      .select('id, name, website, avg_overall')
+      .select('id, name, slug, website')
+      .gt('review_count', 0)
       .order('review_count', { ascending: false })
-      .limit(20)
+      .limit(30)
       .then(({ data }) => setTicker(data || []))
+
+    Promise.all([
+      supabase.from('companies').select('id', { count: 'exact', head: true }).gt('review_count', 0),
+      supabase.from('reviews').select('id', { count: 'exact', head: true }),
+    ]).then(([co, re]) => setStats({ companies: co.count || 0, reviews: re.count || 0 }))
   }, [])
 
   return (
@@ -76,18 +90,23 @@ export default function LandingPage() {
           </div>
           <div className="hero-stats">
             <div className="hero-stat">
-              <span className="hero-stat-n">4</span>
-              <span>Rating Categories</span>
-            </div>
-            <div className="hero-stat-div" />
-            <div className="hero-stat">
-              <span className="hero-stat-n">100%</span>
-              <span>Anonymous</span>
-            </div>
-            <div className="hero-stat-div" />
-            <div className="hero-stat">
-              <span className="hero-stat-n">54+</span>
+              <span className="hero-stat-n">{stats.companies || '50+'}</span>
               <span>Companies Tracked</span>
+            </div>
+            <div className="hero-stat-div" />
+            <div className="hero-stat">
+              <span className="hero-stat-n">{stats.reviews || '—'}</span>
+              <span>Reports Filed</span>
+            </div>
+            <div className="hero-stat-div" />
+            <div className="hero-stat">
+              <span className="hero-stat-n">4</span>
+              <span>Rating Dimensions</span>
+            </div>
+            <div className="hero-stat-div" />
+            <div className="hero-stat">
+              <span className="hero-stat-n">10+</span>
+              <span>Gov't Sources</span>
             </div>
           </div>
         </div>
@@ -189,6 +208,35 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Methodology */}
+      <section className="section section-alt">
+        <div className="section-inner">
+          <div className="section-header" style={{ justifyContent: 'center', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '2.5rem' }}>
+            <h2 className="section-title">How We Rate</h2>
+            <p className="section-sub">Every score is backed by documented public records — not opinions.</p>
+          </div>
+          <div className="methodology-grid">
+            {METHODOLOGY.map((col) => (
+              <div key={col.label} className="methodology-col">
+                <div className="methodology-label">{col.label}</div>
+                <ul className="methodology-list">
+                  {col.items.map((item) => (
+                    <li key={item} className="methodology-item">
+                      <span className="methodology-dot" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="methodology-note">
+            Reports cite specific case numbers, settlement amounts, and government agency findings.
+            Ratings reflect documented behavior — not perception or brand reputation.
+          </p>
         </div>
       </section>
 

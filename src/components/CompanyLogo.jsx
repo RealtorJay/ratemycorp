@@ -70,25 +70,29 @@ function getBrandColor(name) {
 
 export default function CompanyLogo({ name, website, size = 44 }) {
   const [imgFailed, setImgFailed] = useState(false)
-  const logoUrl = getLogoUrl(website, size * 2)
+  const logoUrl = getLogoUrl(website, size)
   const brand = getBrandColor(name)
+
+  // Show brand-colored fallback as background, render favicon on top if available
+  const bg = brand ? brand[0] : '#1a1a1a'
+  const color = brand ? brand[1] : '#fff'
 
   if (logoUrl && !imgFailed) {
     return (
-      <div className="company-logo-wrap" style={{ width: size, height: size }}>
+      <div
+        className="company-logo-wrap"
+        style={{ width: size, height: size, background: bg }}
+      >
         <img
           src={logoUrl}
           alt={`${name} logo`}
           className="company-logo-img"
-          style={{ width: size, height: size }}
+          style={{ width: size * 0.65, height: size * 0.65 }}
           onError={() => setImgFailed(true)}
         />
       </div>
     )
   }
-
-  const bg = brand ? brand[0] : '#1c1c1c'
-  const color = brand ? brand[1] : '#fff'
 
   return (
     <div
