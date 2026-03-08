@@ -1,0 +1,16 @@
+.stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+.stars .star { color: #2a2a2a; font-size: 1rem; line-height: 1; }
+.stars .star.filled { color: #fff; }
+.stars .rating-num {
+  margin-left: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #707070;
+}
+.stars.sm .star { font-size: 0.85rem; }
+.stars.lg .star { font-size: 1.3rem; }
+.stars.lg .rating-num { font-size: 1rem; }

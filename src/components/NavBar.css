@@ -1,0 +1,102 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.navbar-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-logo {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.nav-search {
+  flex: 1;
+  max-width: 360px;
+  display: flex;
+  align-items: center;
+  background: #151515;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.18s;
+}
+.nav-search:focus-within { border-color: rgba(255,255,255,0.3); }
+
+.nav-search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  color: #e8e8e8;
+  font-family: inherit;
+}
+.nav-search-input::placeholder { color: #404040; }
+
+.nav-search-btn {
+  background: none;
+  border: none;
+  padding: 0 0.7rem;
+  color: #404040;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+.nav-search-btn:hover { color: #fff; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.nav-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #707070;
+  text-decoration: none;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 7px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 0.4rem 0.95rem;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  font-family: inherit;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  letter-spacing: 0.01em;
+}
+.btn-primary { background: #fff; color: #000; border-color: #fff; }
+.btn-primary:hover { background: #e0e0e0; border-color: #e0e0e0; }
+.btn-ghost { background: transparent; color: #707070; border-color: transparent; }
+.btn-ghost:hover { color: #fff; }

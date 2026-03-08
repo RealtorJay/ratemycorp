@@ -1,0 +1,16 @@
+.star-picker {
+  display: inline-flex;
+  gap: 2px;
+}
+.sp-star {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #1e1e1e;
+  transition: color 0.1s, transform 0.1s;
+  line-height: 1;
+}
+.sp-star.filled { color: #f59e0b; }
+.sp-star:hover { transform: scale(1.15); }

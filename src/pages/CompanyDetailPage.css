@@ -1,0 +1,211 @@
+.detail-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #e8e8e8;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Header */
+.detail-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 1.5rem;
+}
+
+.detail-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.detail-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff, #888);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.detail-header-info { flex: 1; min-width: 0; }
+
+.detail-breadcrumb {
+  font-size: 0.78rem;
+  color: #404040;
+  margin-bottom: 0.4rem;
+}
+.detail-breadcrumb a { color: #555555; text-decoration: none; }
+.detail-breadcrumb a:hover { color: #fff; }
+
+.detail-name {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.4rem;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.detail-industry {
+  font-size: 0.78rem;
+  background: rgba(255,255,255,0.06);
+  color: #888888;
+  padding: 0.2rem 0.6rem;
+  border-radius: 5px;
+}
+
+.detail-website {
+  font-size: 0.78rem;
+  color: #fff;
+  text-decoration: none;
+}
+.detail-website:hover { text-decoration: underline; }
+
+.detail-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.detail-big-rating {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.detail-review-count {
+  font-size: 0.85rem;
+  color: #555555;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  font-family: inherit;
+  transition: background 0.18s;
+  white-space: nowrap;
+}
+.btn-primary { background: #fff; color: #000; border-color: #fff; }
+.btn-primary:hover { background: #e0e0e0; }
+
+/* Body */
+.detail-body { padding: 2rem 1.5rem; }
+
+.detail-body-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .detail-body-inner { grid-template-columns: 1fr; }
+}
+
+/* Sidebar */
+.detail-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+.sidebar-card {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.sidebar-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1rem;
+}
+
+.rating-bars { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.sidebar-desc {
+  font-size: 0.88rem;
+  color: #555555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sidebar-forum-link {
+  display: block;
+  text-align: center;
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 14px;
+  padding: 1rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.18s, border-color 0.18s;
+}
+.sidebar-forum-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.6); }
+
+/* Main */
+.detail-main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.detail-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.reviews-list { display: flex; flex-direction: column; gap: 1rem; }
+
+.detail-empty {
+  background: #111111;
+  border: 1px dashed rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 3rem;
+  text-align: center;
+  color: #404040;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: #404040;
+  gap: 1rem;
+}
