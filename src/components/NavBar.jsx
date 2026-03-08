@@ -38,6 +38,7 @@ export default function NavBar() {
 
         <div className="nav-links">
           <Link to="/companies" className="nav-link">Companies</Link>
+          <Link to="/politicians" className="nav-link">Politicians</Link>
           {user ? (
             <>
               <Link to="/dashboard" className="nav-link">Dashboard</Link>

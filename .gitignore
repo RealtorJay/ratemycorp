@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 
+# Seed scripts (may contain sensitive config)
+scripts/
+
 # Logs
 logs
 *.log

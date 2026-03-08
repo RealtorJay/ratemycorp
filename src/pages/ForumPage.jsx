@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { canSubmit } from '../lib/rateLimit'
 import './ForumPage.css'
 
 export default function ForumPage() {
@@ -42,6 +43,7 @@ export default function ForumPage() {
     if (!user) { navigate(`/auth?redirect=/companies/${slug}/forum`); return }
     if (title.trim().length < 5) { setError('Title must be at least 5 characters.'); return }
     if (body.trim().length < 20) { setError('Post body must be at least 20 characters.'); return }
+    if (!canSubmit('forum-post-' + slug)) { setError('Please wait before submitting again.'); return }
     setSubmitting(true)
     setError('')
 
@@ -119,13 +121,14 @@ export default function ForumPage() {
                 />
               </label>
               <label className="field-label" style={{ marginTop: '1rem' }}>
-                Post
+                Post <span className="field-hint">(20–10,000 characters)</span>
                 <textarea
                   className="field-textarea"
                   placeholder="Share details, context, or your experience…"
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   rows={5}
+                  maxLength={10000}
                   required
                 />
               </label>

@@ -7,6 +7,7 @@ import ReviewCard from '../components/ReviewCard'
 import CompanyLogo from '../components/CompanyLogo'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import StockWidget from '../components/StockWidget'
 import './CompanyDetailPage.css'
 
 const RATING_CATEGORIES = [
@@ -104,6 +105,12 @@ export default function CompanyDetailPage() {
                 ))}
               </div>
             </div>
+            <StockWidget
+              ticker={company.stock_ticker}
+              companyName={company.name}
+              isPublic={company.is_public !== false}
+            />
+
             {company.description && (
               <div className="sidebar-card">
                 <h3 className="sidebar-title">About</h3>

@@ -10,6 +10,8 @@ import DashboardPage from './pages/DashboardPage'
 import EditReviewPage from './pages/EditReviewPage'
 import ForumPage from './pages/ForumPage'
 import ForumPostPage from './pages/ForumPostPage'
+import PoliticiansPage from './pages/PoliticiansPage'
+import PoliticianDetailPage from './pages/PoliticianDetailPage'
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/companies" element={<CompaniesPage />} />
+          <Route path="/politicians" element={<PoliticiansPage />} />
+          <Route path="/politicians/:slug" element={<PoliticianDetailPage />} />
           <Route path="/companies/:slug" element={<CompanyDetailPage />} />
           <Route path="/companies/:slug/forum" element={<ForumPage />} />
           <Route path="/companies/:slug/forum/:postId" element={<ForumPostPage />} />

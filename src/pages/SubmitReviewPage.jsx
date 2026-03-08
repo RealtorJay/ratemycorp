@@ -4,6 +4,7 @@ import NavBar from '../components/NavBar'
 import StarPicker from '../components/StarPicker'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { canSubmit } from '../lib/rateLimit'
 import './SubmitReviewPage.css'
 
 const RATING_FIELDS = [
@@ -50,6 +51,7 @@ export default function SubmitReviewPage() {
     e.preventDefault()
     const err = validate()
     if (err) { setError(err); return }
+    if (!canSubmit('review-' + slug)) { setError('Please wait before submitting again.'); return }
     setSubmitting(true)
     setError('')
 
@@ -120,15 +122,17 @@ export default function SubmitReviewPage() {
             </label>
 
             <label className="field-label">
-              Report <span className="field-hint">(min 30 characters)</span>
+              Report <span className="field-hint">(30–10,000 characters)</span>
               <textarea
                 className="field-textarea"
                 placeholder="Describe what you know. Be factual and specific — vague or opinion-only reports may be rejected."
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 rows={6}
+                maxLength={10000}
                 required
               />
+              <span className="char-count">{body.length}/10,000</span>
             </label>
 
             <label className="field-label">
@@ -139,6 +143,7 @@ export default function SubmitReviewPage() {
                 value={sources}
                 onChange={(e) => setSources(e.target.value)}
                 rows={3}
+                maxLength={2000}
               />
             </label>
           </div>

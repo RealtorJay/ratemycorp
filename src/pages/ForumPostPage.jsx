@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { canSubmit } from '../lib/rateLimit'
 import './ForumPage.css'
 
 export default function ForumPostPage() {
@@ -16,6 +17,9 @@ export default function ForumPostPage() {
   const [commentBody, setCommentBody] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [flagTarget, setFlagTarget] = useState(null)
+  const [flagReason, setFlagReason] = useState('')
+  const [flagSent, setFlagSent] = useState(false)
 
   useEffect(() => { loadData() }, [postId])
 
@@ -44,23 +48,31 @@ export default function ForumPostPage() {
     setLoading(false)
   }
 
-  const handleFlag = async (targetType, targetId) => {
-    if (!user) { navigate(`/auth`); return }
-    const reason = prompt('Why are you flagging this? (e.g. false claim, spam)')
-    if (!reason) return
+  const openFlag = (targetType, targetId) => {
+    if (!user) { navigate('/auth'); return }
+    if (!canSubmit('flag-' + targetId, 30000)) return
+    setFlagTarget({ type: targetType, id: targetId })
+    setFlagReason('')
+    setFlagSent(false)
+  }
+
+  const submitFlag = async () => {
+    if (!flagTarget || flagReason.trim().length < 5) return
     const { error: flagErr } = await supabase.from('flags').insert({
       reporter_id: user.id,
-      target_type: targetType,
-      target_id: targetId,
-      reason,
+      target_type: flagTarget.type,
+      target_id: flagTarget.id,
+      reason: flagReason.trim(),
     })
-    if (!flagErr) alert('Flagged — a moderator will review this.')
+    if (!flagErr) setFlagSent(true)
+    setTimeout(() => { setFlagTarget(null); setFlagSent(false) }, 2000)
   }
 
   const handleComment = async (e) => {
     e.preventDefault()
     if (!user) { navigate(`/auth?redirect=/companies/${slug}/forum/${postId}`); return }
     if (commentBody.trim().length < 5) { setError('Comment must be at least 5 characters.'); return }
+    if (!canSubmit('comment-' + postId, 15000)) { setError('Please wait before posting again.'); return }
     setSubmitting(true)
     setError('')
 
@@ -114,9 +126,30 @@ export default function ForumPostPage() {
           </div>
           <p className="post-full-body">{post.body}</p>
           <div className="post-full-actions">
-            <button className="flag-btn" onClick={() => handleFlag('forum_post', post.id)}>
+            <button className="flag-btn" onClick={() => openFlag('forum_post', post.id)}>
               ⚑ Flag as inaccurate
             </button>
+            {flagTarget?.id === post.id && (
+              <div className="flag-form" style={{ marginTop: '0.75rem' }}>
+                {flagSent ? (
+                  <p className="flag-success">Flagged — a moderator will review this.</p>
+                ) : (
+                  <>
+                    <input
+                      className="field-input"
+                      placeholder="Why are you flagging this? (e.g. false claim, spam)"
+                      value={flagReason}
+                      onChange={(e) => setFlagReason(e.target.value)}
+                      maxLength={200}
+                    />
+                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                      <button className="btn btn-primary" onClick={submitFlag} disabled={flagReason.trim().length < 5}>Submit</button>
+                      <button className="btn btn-ghost" onClick={() => setFlagTarget(null)}>Cancel</button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -139,11 +172,32 @@ export default function ForumPostPage() {
                   <span>Anonymous</span>
                   <span>{new Date(c.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                   {c.status === 'approved' && (
-                    <button className="flag-btn" onClick={() => handleFlag('forum_comment', c.id)}>
+                    <button className="flag-btn" onClick={() => openFlag('forum_comment', c.id)}>
                       ⚑ Flag
                     </button>
                   )}
                 </div>
+                {flagTarget?.id === c.id && (
+                  <div className="flag-form" style={{ marginTop: '0.5rem' }}>
+                    {flagSent ? (
+                      <p className="flag-success">Flagged — a moderator will review this.</p>
+                    ) : (
+                      <>
+                        <input
+                          className="field-input"
+                          placeholder="Reason for flagging"
+                          value={flagReason}
+                          onChange={(e) => setFlagReason(e.target.value)}
+                          maxLength={200}
+                        />
+                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                          <button className="btn btn-primary" onClick={submitFlag} disabled={flagReason.trim().length < 5}>Submit</button>
+                          <button className="btn btn-ghost" onClick={() => setFlagTarget(null)}>Cancel</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -162,6 +216,7 @@ export default function ForumPostPage() {
                   value={commentBody}
                   onChange={(e) => setCommentBody(e.target.value)}
                   rows={4}
+                  maxLength={5000}
                 />
                 {error && <p className="form-error">{error}</p>}
                 <div className="form-actions" style={{ marginTop: '0.75rem' }}>
