@@ -4,29 +4,44 @@
   gap: 0.75rem;
 }
 .rating-bar-label {
-  font-size: 0.82rem;
-  color: #888888;
+  font-size: 0.8rem;
+  color: #666;
   width: 130px;
   flex-shrink: 0;
   text-align: right;
+  transition: color 0.2s;
 }
+.rating-bar-row:hover .rating-bar-label { color: #aaa; }
+
 .rating-bar-track {
   flex: 1;
-  height: 8px;
+  height: 6px;
   background: #1e1e1e;
   border-radius: 999px;
   overflow: hidden;
+  cursor: default;
 }
 .rating-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #fff, #888);
   border-radius: 999px;
-  transition: width 0.4s ease;
+  animation: barGrow 0.8s ease both;
+  background: linear-gradient(90deg, #fff 0%, #666 100%);
+  transition: background 0.3s;
 }
+.rating-bar-row:hover .rating-bar-fill {
+  background: linear-gradient(90deg, #fff 0%, #999 100%);
+}
+
+@keyframes barGrow {
+  from { width: 0 !important; }
+}
+
 .rating-bar-value {
   font-size: 0.82rem;
-  font-weight: 600;
-  color: #555555;
+  font-weight: 700;
+  color: #444;
   width: 28px;
   flex-shrink: 0;
+  transition: color 0.2s;
 }
+.rating-bar-row:hover .rating-bar-value { color: #888; }

@@ -37,6 +37,7 @@ function scoreLabel(score) {
 
 export default function LandingPage() {
   const [trending, setTrending] = useState([])
+  const [ticker, setTicker] = useState([])
 
   useEffect(() => {
     supabase
@@ -45,6 +46,13 @@ export default function LandingPage() {
       .order('review_count', { ascending: false })
       .limit(6)
       .then(({ data }) => setTrending(data || []))
+
+    supabase
+      .from('companies')
+      .select('id, name, website, avg_overall')
+      .order('review_count', { ascending: false })
+      .limit(20)
+      .then(({ data }) => setTicker(data || []))
   }, [])
 
   return (
@@ -78,12 +86,26 @@ export default function LandingPage() {
             </div>
             <div className="hero-stat-div" />
             <div className="hero-stat">
-              <span className="hero-stat-n">Fact</span>
-              <span>Checked</span>
+              <span className="hero-stat-n">54+</span>
+              <span>Companies Tracked</span>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Logo ticker */}
+      {ticker.length > 0 && (
+        <div className="ticker-wrap">
+          <div className="ticker-track">
+            {[...ticker, ...ticker].map((c, i) => (
+              <Link key={`${c.id}-${i}`} to={`/companies/${c.slug}`} className="ticker-item">
+                <CompanyLogo name={c.name} website={c.website} size={28} />
+                <span className="ticker-name">{c.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Scorecards */}
       <section className="section">

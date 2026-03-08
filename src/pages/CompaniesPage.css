@@ -13,9 +13,11 @@
 
 .companies-title {
   font-size: 1.8rem;
-  font-weight: 800;
+  font-weight: 900;
   color: #ffffff;
   margin: 0 0 1.5rem;
+  letter-spacing: -0.5px;
+  animation: fadeUp 0.5s ease both;
 }
 
 /* Filter bar */
@@ -86,7 +88,7 @@
   font-family: inherit;
   transition: background 0.15s, color 0.15s;
 }
-.sort-tab.active { background: #fff; color: #fff; }
+.sort-tab.active { background: #fff; color: #000; }
 
 /* Grid */
 .companies-grid {
@@ -104,11 +106,16 @@
   border-radius: 14px;
   padding: 1.25rem;
   text-decoration: none;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.22s, box-shadow 0.22s;
+  animation: fadeUp 0.4s ease both;
 }
 .company-card:hover {
-  border-color: rgba(255,255,255,0.4);
-  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.company-card:active {
+  transform: translateY(-1px);
 }
 
 .company-avatar {
