@@ -45,7 +45,7 @@ export default function CompaniesPage() {
       .from('companies')
       .select('id, name, slug, industry, website, review_count, avg_overall')
       .order(sortBy, { ascending: false })
-      .limit(60)
+      .limit(200)
 
     if (query.trim()) q = q.ilike('name', `%${query.trim()}%`)
     if (industry !== 'all') q = q.eq('industry', industry)

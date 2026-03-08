@@ -481,3 +481,169 @@
   font-size: 0.62rem;
   letter-spacing: 0.06em;
 }
+
+/* ── Scandal Timeline ── */
+.detail-scandals-section {
+  margin-bottom: 2rem;
+}
+
+.scandals-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.scandals-timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #333 0%, rgba(51,51,51,0.2) 100%);
+}
+
+.scandal-card {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.scandal-timeline-dot {
+  position: absolute;
+  left: -1.5rem;
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  z-index: 1;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+.scandal-content {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  flex: 1;
+  transition: border-color 0.2s;
+}
+.scandal-content:hover {
+  border-color: #333;
+}
+
+.scandal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.scandal-badges {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.scandal-severity {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+}
+
+.scandal-type-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #888;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+}
+
+.scandal-ongoing {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #ef4444;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.scandal-year {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #555;
+  font-variant-numeric: tabular-nums;
+}
+
+.scandal-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e8e8e8;
+  margin: 0 0 0.4rem;
+  line-height: 1.35;
+}
+
+.scandal-desc {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.6;
+  margin: 0 0 0.6rem;
+}
+
+.scandal-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.scandal-amount {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.scandal-agency {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #666;
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+}
+
+.scandal-outcome {
+  font-size: 0.75rem;
+  color: #666;
+  line-height: 1.55;
+  border-left: 2px solid rgba(239,68,68,0.3);
+  padding-left: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.scandal-outcome-label {
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+}

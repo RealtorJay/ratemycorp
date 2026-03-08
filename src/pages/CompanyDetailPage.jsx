@@ -37,6 +37,26 @@ const CONNECTION_LABELS = {
   industry_pac:         'Industry PAC',
 }
 
+const SCANDAL_TYPE_LABELS = {
+  environmental: 'Environmental',
+  labor: 'Labor & Workforce',
+  fraud: 'Fraud',
+  safety: 'Safety',
+  privacy: 'Privacy',
+  antitrust: 'Antitrust',
+  corruption: 'Corruption',
+  discrimination: 'Discrimination',
+  regulatory: 'Regulatory',
+  other: 'Other',
+}
+
+const SEVERITY_COLORS = {
+  critical: '#ef4444',
+  major: '#f97316',
+  moderate: '#eab308',
+  minor: '#a3a3a3',
+}
+
 export default function CompanyDetailPage() {
   const { slug } = useParams()
   const { user } = useAuth()
@@ -44,6 +64,7 @@ export default function CompanyDetailPage() {
   const [company, setCompany] = useState(null)
   const [reviews, setReviews] = useState([])
   const [connections, setConnections] = useState([])
+  const [scandals, setScandals] = useState([])
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
 
@@ -62,7 +83,7 @@ export default function CompanyDetailPage() {
     if (error || !co) { setNotFound(true); setLoading(false); return }
     setCompany(co)
 
-    const [revsRes, connRes] = await Promise.all([
+    const [revsRes, connRes, scandalsRes] = await Promise.all([
       supabase
         .from('reviews')
         .select('*')
@@ -74,10 +95,16 @@ export default function CompanyDetailPage() {
         .select('*, politicians(id, slug, full_name, party, chamber, state, title, accountability_score)')
         .eq('company_id', co.id)
         .order('amount_cents', { ascending: false }),
+      supabase
+        .from('company_scandals')
+        .select('*')
+        .eq('company_id', co.id)
+        .order('date_started', { ascending: false }),
     ])
 
     setReviews(revsRes.data || [])
     setConnections(connRes.data || [])
+    setScandals(scandalsRes.data || [])
     setLoading(false)
   }
 
@@ -265,6 +292,59 @@ export default function CompanyDetailPage() {
                           affecting their votes on {company.industry?.toLowerCase() || 'industry'} policy.
                         </div>
                       </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Scandal Timeline */}
+            {scandals.length > 0 && (
+              <div className="detail-scandals-section">
+                <div className="detail-main-header">
+                  <h2 className="detail-section-title">Scandal Timeline ({scandals.length})</h2>
+                </div>
+                <div className="scandals-timeline">
+                  {scandals.map((s) => {
+                    const sevColor = SEVERITY_COLORS[s.severity] || '#a3a3a3'
+                    const year = s.date_started ? new Date(s.date_started).getFullYear() : null
+                    return (
+                      <div key={s.id} className="scandal-card">
+                        <div className="scandal-timeline-dot" style={{ background: sevColor }} />
+                        <div className="scandal-content">
+                          <div className="scandal-header">
+                            <div className="scandal-badges">
+                              <span className="scandal-severity" style={{ color: sevColor, borderColor: sevColor }}>
+                                {s.severity}
+                              </span>
+                              <span className="scandal-type-badge">
+                                {SCANDAL_TYPE_LABELS[s.scandal_type] || s.scandal_type}
+                              </span>
+                              {s.is_ongoing && <span className="scandal-ongoing">Ongoing</span>}
+                            </div>
+                            {year && <span className="scandal-year">{year}</span>}
+                          </div>
+                          <h3 className="scandal-title">{s.title}</h3>
+                          <p className="scandal-desc">{s.description}</p>
+                          <div className="scandal-meta">
+                            {(s.fine_amount_display || s.settlement_amount_display) && (
+                              <span className="scandal-amount">
+                                {s.fine_amount_display && <>Fine: {s.fine_amount_display}</>}
+                                {s.fine_amount_display && s.settlement_amount_display && ' · '}
+                                {s.settlement_amount_display && <>Settlement: {s.settlement_amount_display}</>}
+                              </span>
+                            )}
+                            {s.agency_involved && (
+                              <span className="scandal-agency">{s.agency_involved}</span>
+                            )}
+                          </div>
+                          {s.outcome && (
+                            <div className="scandal-outcome">
+                              <span className="scandal-outcome-label">Outcome:</span> {s.outcome}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     )
                   })}
                 </div>
