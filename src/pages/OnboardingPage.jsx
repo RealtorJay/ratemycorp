@@ -236,7 +236,7 @@ export default function OnboardingPage() {
                   className={`company-select-card ${selectedCompanyIds.includes(c.id) ? 'selected' : ''}`}
                   onClick={() => toggleCompany(c.id)}
                 >
-                  <CompanyLogo company={c} size={36} />
+                  <CompanyLogo name={c.name} website={c.website} size={36} />
                   <div className="company-select-info">
                     <span className="company-select-name">{c.name}</span>
                     <span className="company-select-industry">{c.industry}</span>
