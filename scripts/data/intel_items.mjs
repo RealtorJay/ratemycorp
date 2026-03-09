@@ -48,11 +48,32 @@ export const INTEL_ITEMS = [
   {
     company_slug: 'starbucks',
     item_type: 'tweet',
-    subject_type: 'ceo',
-    embed_url: 'https://x.com/BrianNiccol/status/1882433024116248753',
-    title: 'Starbucks CEO Brian Niccol on company direction',
-    category: 'neutral',
-    published_at: '2025-01-23',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/SBWorkersUnited/status/1871249819500728804',
+    title: 'Starbucks Workers United: CEO makes ~$50k/hour, $113M package',
+    source_name: '@SBWorkersUnited',
+    category: 'labor',
+    published_at: '2024-12-23',
+  },
+  {
+    company_slug: 'starbucks',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/SecKennedy/status/1935352690323652691',
+    title: 'RFK Jr. met with Starbucks CEO Brian Niccol about MAHA menu',
+    source_name: '@SecKennedy',
+    category: 'regulatory',
+    published_at: '2025-06-08',
+  },
+  {
+    company_slug: 'starbucks',
+    item_type: 'tiktok',
+    subject_type: 'public_discourse',
+    embed_url: 'https://www.tiktok.com/@sbworkersunited/video/7328206201496390954',
+    title: 'Starbucks Workers United: Labor abuses and child labor lawsuit',
+    source_name: '@sbworkersunited',
+    category: 'labor',
+    published_at: '2024-01-20',
   },
 
   // ════════════════════════════════════════════════════════════════════════
@@ -147,6 +168,37 @@ export const INTEL_ITEMS = [
     published_at: '2025-09-15',
   },
 
+  {
+    company_slug: '3m',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/Forbes/status/1605249324039999489',
+    title: 'Forbes: "3M Will Discontinue Use Of PFAS By 2025"',
+    source_name: '@Forbes',
+    category: 'environmental',
+    published_at: '2022-12-20',
+  },
+  {
+    company_slug: '3m',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/NewYorker/status/1802918558931787855',
+    title: 'The New Yorker: How 3M concealed forever chemicals contamination',
+    source_name: '@NewYorker',
+    category: 'scandal',
+    published_at: '2024-06-18',
+  },
+  {
+    company_slug: '3m',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/OwenGregorian/status/1792536920632738160',
+    title: 'Toxic Gaslighting: How 3M Executives Convinced a Scientist',
+    source_name: '@OwenGregorian',
+    category: 'scandal',
+    published_at: '2024-05-20',
+  },
+
   // ════════════════════════════════════════════════════════════════════════
   // DUPONT — PFAS
   // ════════════════════════════════════════════════════════════════════════
@@ -175,8 +227,62 @@ export const INTEL_ITEMS = [
   },
 
   // ════════════════════════════════════════════════════════════════════════
+  // JOHNSON & JOHNSON — Tweets
+  // ════════════════════════════════════════════════════════════════════════
+  {
+    company_slug: 'johnson-and-johnson',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/FT/status/1785690750757351444',
+    title: 'Financial Times: J&J proposes $6.5bn deal to settle talc cancer lawsuits',
+    source_name: '@FT',
+    category: 'legal',
+    published_at: '2024-05-01',
+  },
+  {
+    company_slug: 'johnson-and-johnson',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/kare11/status/2002268498374856837',
+    title: 'Minnesota jury says J&J owes $65.5M to woman with cancer from talc',
+    source_name: '@kare11',
+    category: 'legal',
+    published_at: '2025-12-15',
+  },
+  {
+    company_slug: 'johnson-and-johnson',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/BNNBloomberg/status/1975705229808083159',
+    title: 'BNN Bloomberg: J&J ordered to pay $966 million in talc verdict',
+    source_name: '@BNNBloomberg',
+    category: 'legal',
+    published_at: '2025-10-12',
+  },
+
+  // ════════════════════════════════════════════════════════════════════════
   // McDONALD'S
   // ════════════════════════════════════════════════════════════════════════
+  {
+    company_slug: 'mcdonalds',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/McDonalds/status/1860103597889028323',
+    title: 'McDonald\'s viral tweet — 12.7M views',
+    source_name: '@McDonalds',
+    category: 'neutral',
+    published_at: '2024-11-22',
+  },
+  {
+    company_slug: 'mcdonalds',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/McDonalds/status/1486115285983805444',
+    title: 'McDonald\'s to Tesla: "only if @tesla accepts grimacecoin"',
+    source_name: '@McDonalds',
+    category: 'neutral',
+    published_at: '2022-01-25',
+  },
   {
     company_slug: 'mcdonalds',
     item_type: 'news',
@@ -214,6 +320,36 @@ export const INTEL_ITEMS = [
     category: 'scandal',
     published_at: '2025-11-14',
     is_pinned: true,
+  },
+  {
+    company_slug: 'shein',
+    item_type: 'tiktok',
+    subject_type: 'public_discourse',
+    embed_url: 'https://www.tiktok.com/@sustainablefashionfriend/video/7265636525025660192',
+    title: 'Nasty chemicals found in Shein fast fashion',
+    source_name: '@sustainablefashionfriend',
+    category: 'consumer',
+    published_at: '2023-08-15',
+  },
+  {
+    company_slug: 'shein',
+    item_type: 'tiktok',
+    subject_type: 'public_discourse',
+    embed_url: 'https://www.tiktok.com/@nontoxicdad/video/7258399119272627499',
+    title: 'PFAS, Lead, Phthalates found in fashion brands including Shein',
+    source_name: '@nontoxicdad',
+    category: 'consumer',
+    published_at: '2023-07-20',
+  },
+  {
+    company_slug: 'shein',
+    item_type: 'tweet',
+    subject_type: 'public_discourse',
+    embed_url: 'https://x.com/twinscott/status/7404917370176671009',
+    title: 'Shein and Temu breaking records for toxic substances',
+    source_name: '@twinscott',
+    category: 'scandal',
+    published_at: '2025-07-01',
   },
   {
     company_slug: 'shein',
@@ -304,10 +440,21 @@ export const INTEL_ITEMS = [
     company_slug: 'apple',
     item_type: 'tweet',
     subject_type: 'ceo',
-    embed_url: 'https://x.com/tim_cook/status/1879947876498186395',
-    title: 'Tim Cook on Apple\'s future',
+    embed_url: 'https://x.com/tim_cook/status/1890068457825394918',
+    title: 'Tim Cook teases Apple product launch',
+    source_name: '@tim_cook',
     category: 'neutral',
-    published_at: '2025-01-16',
+    published_at: '2025-02-19',
+  },
+  {
+    company_slug: 'apple',
+    item_type: 'tweet',
+    subject_type: 'ceo',
+    embed_url: 'https://x.com/tim_cook/status/1854225875002396860',
+    title: 'Tim Cook congratulates President Trump on election victory',
+    source_name: '@tim_cook',
+    category: 'neutral',
+    published_at: '2024-11-06',
   },
   {
     company_slug: 'apple',
@@ -327,10 +474,32 @@ export const INTEL_ITEMS = [
     company_slug: 'tesla',
     item_type: 'tweet',
     subject_type: 'ceo',
-    embed_url: 'https://x.com/elonmusk/status/1897054625055232355',
-    title: 'Elon Musk on Tesla and DOGE',
+    embed_url: 'https://x.com/elonmusk/status/1026872652290379776',
+    title: 'Elon Musk: "Am considering taking Tesla private at $420. Funding secured."',
+    source_name: '@elonmusk',
     category: 'financial',
-    published_at: '2025-03-04',
+    published_at: '2018-08-07',
+    is_pinned: true,
+  },
+  {
+    company_slug: 'tesla',
+    item_type: 'tweet',
+    subject_type: 'ceo',
+    embed_url: 'https://x.com/elonmusk/status/1905076240479895932',
+    title: 'Elon Musk on tariff impact on Tesla',
+    source_name: '@elonmusk',
+    category: 'financial',
+    published_at: '2025-03-27',
+  },
+  {
+    company_slug: 'tesla',
+    item_type: 'tweet',
+    subject_type: 'ceo',
+    embed_url: 'https://x.com/elonmusk/status/1746999488252703098',
+    title: 'Elon Musk demands 25% voting control of Tesla',
+    source_name: '@elonmusk',
+    category: 'financial',
+    published_at: '2024-01-15',
   },
   {
     company_slug: 'tesla',
@@ -348,6 +517,16 @@ export const INTEL_ITEMS = [
   // ════════════════════════════════════════════════════════════════════════
   {
     company_slug: 'meta',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/Meta/status/1968485845125791982',
+    title: 'Meta Connect 2025: "AI and glasses"',
+    source_name: '@Meta',
+    category: 'neutral',
+    published_at: '2025-05-31',
+  },
+  {
+    company_slug: 'meta',
     item_type: 'research',
     subject_type: 'company',
     title: 'Meta\'s Mental Health Crisis: What the Internal Documents Revealed',
@@ -360,6 +539,16 @@ export const INTEL_ITEMS = [
   // ════════════════════════════════════════════════════════════════════════
   // AMAZON
   // ════════════════════════════════════════════════════════════════════════
+  {
+    company_slug: 'amazon',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/amazon/status/1844811461576827011',
+    title: 'Amazon: Delivering the Future — robotics, AI, delivery',
+    source_name: '@amazon',
+    category: 'neutral',
+    published_at: '2024-10-09',
+  },
   {
     company_slug: 'amazon',
     item_type: 'research',
@@ -399,5 +588,67 @@ export const INTEL_ITEMS = [
     source_name: 'Sokolove Law',
     category: 'legal',
     published_at: '2026-01-15',
+  },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // NVIDIA
+  // ════════════════════════════════════════════════════════════════════════
+  {
+    company_slug: 'nvidia',
+    item_type: 'tweet',
+    subject_type: 'ceo',
+    embed_url: 'https://x.com/nvidia/status/1996394581341209081',
+    title: 'Jensen Huang on Joe Rogan — NVIDIA CEO interview',
+    source_name: '@nvidia',
+    category: 'neutral',
+    published_at: '2025-07-01',
+  },
+  {
+    company_slug: 'nvidia',
+    item_type: 'tweet',
+    subject_type: 'ceo',
+    embed_url: 'https://x.com/nvidia/status/1929615983414575456',
+    title: 'Jensen Huang dishwasher origin story — from Denny\'s to $3T company',
+    source_name: '@nvidia',
+    category: 'positive',
+    published_at: '2025-06-02',
+  },
+  {
+    company_slug: 'nvidia',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/nvidianewsroom/status/1920822575967449103',
+    title: 'NVIDIA: AI factories and the new industrial revolution',
+    source_name: '@nvidianewsroom',
+    category: 'financial',
+    published_at: '2025-05-09',
+  },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // WALMART
+  // ════════════════════════════════════════════════════════════════════════
+  {
+    company_slug: 'walmart',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/WalmartInc/status/1878814221783187896',
+    title: 'Walmart refreshes brand identity for 2025',
+    source_name: '@WalmartInc',
+    category: 'neutral',
+    published_at: '2025-01-13',
+  },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // GOOGLE
+  // ════════════════════════════════════════════════════════════════════════
+  {
+    company_slug: 'google',
+    item_type: 'tweet',
+    subject_type: 'company',
+    embed_url: 'https://x.com/Google/status/1926006830456521068',
+    title: 'Google I/O recap — major AI announcements',
+    source_name: '@Google',
+    category: 'neutral',
+    published_at: '2025-05-20',
   },
 ]
