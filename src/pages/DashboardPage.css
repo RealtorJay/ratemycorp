@@ -231,3 +231,45 @@
   color: #fff;
   background: rgba(255,255,255,0.05);
 }
+
+/* ── AI Insights ──────────────────────────────────── */
+.ai-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(124, 58, 237, 0.2);
+  color: #c084fc;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+.dash-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.dash-insight-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(124, 58, 237, 0.02));
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-left: 3px solid #7c3aed;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+.dash-insight-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e8e8e8;
+  margin: 0 0 0.5rem;
+}
+.dash-insight-body {
+  font-size: 0.85rem;
+  color: #aaa;
+  line-height: 1.55;
+  margin: 0;
+}
+.dash-insight-date {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  color: #555;
+}

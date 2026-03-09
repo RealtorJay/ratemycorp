@@ -6,6 +6,19 @@
  * Run supabase_data_expansion_migration.sql first.
  */
 import { createClient } from '@supabase/supabase-js'
+import { readFileSync } from 'fs'
+
+// Load .env
+try {
+  const envFile = readFileSync(new URL('../.env', import.meta.url), 'utf8')
+  for (const line of envFile.split('\n')) {
+    const match = line.match(/^([^#=]+)=(.*)$/)
+    if (match && !process.env[match[1].trim()]) {
+      process.env[match[1].trim()] = match[2].trim()
+    }
+  }
+} catch {}
+
 import { TECH_COMPANIES } from './data/companies_tech.mjs'
 import { FINANCE_COMPANIES } from './data/companies_finance.mjs'
 import { PHARMA_COMPANIES } from './data/companies_pharma.mjs'
@@ -21,7 +34,7 @@ import { HEALTH_SCANDAL_COMPANIES, HEALTH_SCANDALS } from './data/companies_heal
 import { COMPANY_SCANDALS } from './data/company_scandals.mjs'
 import { REVIEWS_ENVIRONMENTAL, REVIEWS_LABOR, REVIEWS_LEGAL, REVIEWS_CONSUMER, REVIEWS_LOBBYING } from './data/company_reviews.mjs'
 
-const SUPABASE_URL = process.env.SUPABASE_URL
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 if (!SUPABASE_URL || !SERVICE_KEY) {
   console.error('Missing env vars: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY')

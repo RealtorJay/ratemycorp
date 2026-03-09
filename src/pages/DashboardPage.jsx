@@ -16,8 +16,21 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [followedDetails, setFollowedDetails] = useState([])
   const [recommended, setRecommended] = useState([])
+  const [insights, setInsights] = useState(null)
 
   useEffect(() => { fetchReviews() }, [user])
+
+  // Fetch AI insights
+  useEffect(() => {
+    if (!user) return
+    supabase
+      .from('user_insights')
+      .select('*')
+      .eq('user_id', user.id)
+      .gte('expires_at', new Date().toISOString())
+      .single()
+      .then(({ data }) => setInsights(data))
+  }, [user])
 
   // Fetch followed company details
   useEffect(() => {
@@ -91,6 +104,27 @@ export default function DashboardPage() {
             <span className="dash-stat-label">Following</span>
           </div>
         </div>
+
+        {/* AI Insights */}
+        {insights?.insights_data?.cards?.length > 0 && (
+          <div className="dash-section" style={{ marginBottom: '2.5rem' }}>
+            <div className="dash-section-header">
+              <h2 className="dash-section-title">Your Insights</h2>
+              <span className="ai-badge">AI Generated</span>
+            </div>
+            <div className="dash-insights-grid">
+              {insights.insights_data.cards.map((card, i) => (
+                <div key={i} className="dash-insight-card">
+                  <h3 className="dash-insight-title">{card.title}</h3>
+                  <p className="dash-insight-body">{card.body}</p>
+                </div>
+              ))}
+            </div>
+            <span className="dash-insight-date">
+              Generated {new Date(insights.generated_at).toLocaleDateString()}
+            </span>
+          </div>
+        )}
 
         {/* Followed Companies */}
         {followedDetails.length > 0 && (

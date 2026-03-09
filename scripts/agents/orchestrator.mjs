@@ -6,6 +6,10 @@ import { runPromiseAgent } from './promises/index.mjs'
 import { runCompanyAgent } from './companies/index.mjs'
 import { runConnectionsAgent } from './connections/index.mjs'
 import { runFinancialAgent } from './financial/index.mjs'
+import { runModerationAgent } from './moderation/index.mjs'
+import { runSummariesAgent } from './summaries/index.mjs'
+import { runDiscoveryAgent } from './discovery/index.mjs'
+import { runInsightsAgent } from './insights/index.mjs'
 
 // ── Validate environment ──────────────────────────────────────────────────────
 validateConfig()
@@ -17,6 +21,10 @@ const AGENTS = {
   companies:   { fn: runCompanyAgent,     schedule: CONFIG.schedule.companies },
   connections: { fn: runConnectionsAgent, schedule: CONFIG.schedule.connections },
   financial:   { fn: runFinancialAgent,   schedule: CONFIG.schedule.financial },
+  moderation:  { fn: runModerationAgent,  schedule: CONFIG.schedule.moderation },
+  summaries:   { fn: runSummariesAgent,   schedule: CONFIG.schedule.summaries },
+  discovery:   { fn: runDiscoveryAgent,   schedule: CONFIG.schedule.discovery },
+  insights:    { fn: runInsightsAgent,    schedule: CONFIG.schedule.insights },
 }
 
 /**

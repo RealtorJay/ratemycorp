@@ -33,6 +33,14 @@ export const CONFIG = {
     companies:   '0 */6 * * *',       // Every 6 hours
     connections: '0 4 * * *',         // Daily at 4 AM UTC
     financial:   '0 14,20 * * 1-5',   // 10 AM & 4 PM ET (UTC+4), weekdays
+    moderation:  '*/2 * * * *',       // Every 2 minutes
+    summaries:   '0 */4 * * *',       // Every 4 hours
+    discovery:   '0 5 * * *',         // Daily at 5 AM UTC
+    insights:    '0 6 * * *',         // Daily at 6 AM UTC
+  },
+  moderation: {
+    autoApproveMax: 30,   // All scores below this → auto-approve
+    autoRejectMin: 80,    // Any score above this → auto-reject
   },
 }
 
