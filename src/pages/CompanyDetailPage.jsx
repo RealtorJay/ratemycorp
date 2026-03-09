@@ -170,23 +170,51 @@ export default function CompanyDetailPage() {
               isPublic={company.is_public !== false}
             />
 
-            {/* Leadership */}
-            {company.ceo_name && (
+            {/* Company Info */}
+            {(company.ceo_name || company.headquarters || company.founded_year || company.stock_ticker || company.market_cap) && (
               <div className="sidebar-card">
-                <h3 className="sidebar-title">Leadership</h3>
-                <div className="leadership-info">
-                  <div className="leadership-avatar">
-                    {company.ceo_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+                <h3 className="sidebar-title">
+                  {company.ceo_name ? 'Leadership' : 'Company Info'}
+                </h3>
+                {company.ceo_name && (
+                  <div className="leadership-info">
+                    <div className="leadership-avatar">
+                      {company.ceo_name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+                    </div>
+                    <div className="leadership-detail">
+                      <div className="leadership-name">{company.ceo_name}</div>
+                      <div className="leadership-role">{company.ceo_title || 'CEO'}</div>
+                    </div>
                   </div>
-                  <div className="leadership-detail">
-                    <div className="leadership-name">{company.ceo_name}</div>
-                    <div className="leadership-role">{company.ceo_title || 'CEO'}</div>
-                  </div>
-                </div>
+                )}
                 {company.headquarters && (
                   <div className="leadership-meta-row">
                     <span className="leadership-meta-label">HQ</span>
                     <span className="leadership-meta-value">{company.headquarters}</span>
+                  </div>
+                )}
+                {company.founded_year && (
+                  <div className="leadership-meta-row">
+                    <span className="leadership-meta-label">Founded</span>
+                    <span className="leadership-meta-value">{company.founded_year}</span>
+                  </div>
+                )}
+                {company.stock_ticker && (
+                  <div className="leadership-meta-row">
+                    <span className="leadership-meta-label">Ticker</span>
+                    <span className="leadership-meta-value">{company.stock_ticker}</span>
+                  </div>
+                )}
+                {company.market_cap && (
+                  <div className="leadership-meta-row">
+                    <span className="leadership-meta-label">Market Cap</span>
+                    <span className="leadership-meta-value">{company.market_cap}</span>
+                  </div>
+                )}
+                {company.employee_count && (
+                  <div className="leadership-meta-row">
+                    <span className="leadership-meta-label">Employees</span>
+                    <span className="leadership-meta-value">{company.employee_count}</span>
                   </div>
                 )}
                 {company.lobbying_spend && (
@@ -366,6 +394,20 @@ export default function CompanyDetailPage() {
             ) : (
               <div className="reviews-list">
                 {reviews.map((r) => <ReviewCard key={r.id} review={r} />)}
+              </div>
+            )}
+
+            {/* Encourage contributions for sparse profiles */}
+            {(!company.description && !company.ceo_name && connections.length === 0 && scandals.length === 0) && (
+              <div className="detail-contribute">
+                <h3>Help improve this page</h3>
+                <p>
+                  This company profile is still being built out. Know something about {company.name}?
+                  Submit a report with details about their business practices, environmental impact, or corporate behavior.
+                </p>
+                <button className="btn btn-primary" onClick={handleWriteReview}>
+                  + Submit a Report
+                </button>
               </div>
             )}
           </main>

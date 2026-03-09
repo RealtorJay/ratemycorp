@@ -168,6 +168,56 @@
 }
 .company-card:hover .company-arrow { color: #fff; }
 
+/* Results meta */
+.results-meta {
+  font-size: 0.82rem;
+  color: #555555;
+  margin-bottom: 1rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 2.5rem;
+  padding-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #888888;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pagination-btn:hover:not(:disabled):not(.active) {
+  border-color: rgba(255,255,255,0.2);
+  color: #ccc;
+}
+.pagination-btn.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pagination-dots {
+  color: #555555;
+  padding: 0 0.3rem;
+  font-size: 0.85rem;
+}
+
 .companies-loading, .companies-empty {
   text-align: center;
   padding: 4rem 0;

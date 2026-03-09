@@ -647,3 +647,28 @@
   font-size: 0.62rem;
   letter-spacing: 0.06em;
 }
+
+/* Contribute prompt for sparse profiles */
+.detail-contribute {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: rgba(124, 58, 237, 0.06);
+  border: 1px dashed rgba(124, 58, 237, 0.25);
+  border-radius: 14px;
+  text-align: center;
+}
+.detail-contribute h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c084fc;
+  margin: 0 0 0.5rem;
+}
+.detail-contribute p {
+  font-size: 0.88rem;
+  color: #888;
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
