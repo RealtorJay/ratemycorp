@@ -40,6 +40,8 @@ export default function NavBar() {
           <Link to="/companies" className="nav-link">Companies</Link>
           <Link to="/politicians" className="nav-link">Politicians</Link>
           <Link to="/connections" className="nav-link">Connections</Link>
+          <Link to="/news" className="nav-link">News</Link>
+          <Link to="/federal-data" className="nav-link">Federal Data</Link>
           {user ? (
             <>
               <Link to="/dashboard" className="nav-link">Dashboard</Link>

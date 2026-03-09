@@ -17,6 +17,7 @@ import { RETAIL_COMPANIES } from './data/companies_retail.mjs'
 import { PLATFORM_COMPANIES } from './data/companies_platforms.mjs'
 import { MISC_COMPANIES } from './data/companies_misc.mjs'
 import { REALESTATE_COMPANIES } from './data/companies_realestate.mjs'
+import { HEALTH_SCANDAL_COMPANIES, HEALTH_SCANDALS } from './data/companies_health_scandals.mjs'
 import { COMPANY_SCANDALS } from './data/company_scandals.mjs'
 import { REVIEWS_ENVIRONMENTAL, REVIEWS_LABOR, REVIEWS_LEGAL, REVIEWS_CONSUMER, REVIEWS_LOBBYING } from './data/company_reviews.mjs'
 
@@ -45,7 +46,7 @@ const seen = new Set()
 for (const list of [
   TECH_COMPANIES, FINANCE_COMPANIES, PHARMA_COMPANIES, DEFENSE_COMPANIES,
   ENERGY_COMPANIES, FOOD_COMPANIES, CONTROVERSIAL_COMPANIES, RETAIL_COMPANIES,
-  PLATFORM_COMPANIES, MISC_COMPANIES, REALESTATE_COMPANIES
+  PLATFORM_COMPANIES, MISC_COMPANIES, REALESTATE_COMPANIES, HEALTH_SCANDAL_COMPANIES
 ]) {
   for (const c of list) {
     if (!seen.has(c.slug)) {
@@ -81,12 +82,13 @@ async function seedCompanies() {
 }
 
 async function seedScandals() {
-  console.log(`\n── Seeding ${COMPANY_SCANDALS.length} scandal records ──`)
+  const ALL_SCANDALS = [...COMPANY_SCANDALS, ...HEALTH_SCANDALS]
+  console.log(`\n── Seeding ${ALL_SCANDALS.length} scandal records (${COMPANY_SCANDALS.length} base + ${HEALTH_SCANDALS.length} health) ──`)
   const { data: companies } = await sb.from('companies').select('id, slug')
   const map = Object.fromEntries((companies || []).map(c => [c.slug, c.id]))
 
   let ok = 0, skip = 0
-  for (const s of COMPANY_SCANDALS) {
+  for (const s of ALL_SCANDALS) {
     const companyId = map[s.company_slug]
     if (!companyId) { skip++; console.log(`  SKIP scandal: no company ${s.company_slug}`); continue }
 

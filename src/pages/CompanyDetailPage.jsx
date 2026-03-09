@@ -9,6 +9,8 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import StockWidget from '../components/StockWidget'
 import FollowButton from '../components/FollowButton'
+import IntelFeed from '../components/IntelFeed'
+import GovDataWidget from '../components/GovDataWidget'
 import './CompanyDetailPage.css'
 
 const RATING_CATEGORIES = [
@@ -169,6 +171,7 @@ export default function CompanyDetailPage() {
               companyName={company.name}
               isPublic={company.is_public !== false}
             />
+            <GovDataWidget companyName={company.name} />
 
             {/* Company Info */}
             {(company.ceo_name || company.headquarters || company.founded_year || company.stock_ticker || company.market_cap) && (
@@ -376,6 +379,28 @@ export default function CompanyDetailPage() {
                     )
                   })}
                 </div>
+              </div>
+            )}
+
+            {/* Intel Feed */}
+            <IntelFeed companyId={company.id} companyName={company.name} />
+
+            {/* AI Review Summary */}
+            {company.ai_review_summary && (
+              <div className="ai-summary-card">
+                <div className="ai-summary-header">
+                  <h3 className="ai-summary-title">Review Summary</h3>
+                  <span className="ai-badge">AI Generated</span>
+                </div>
+                <div
+                  className="ai-summary-body"
+                  dangerouslySetInnerHTML={{ __html: company.ai_review_summary }}
+                />
+                {company.ai_summary_updated_at && (
+                  <span className="ai-summary-date">
+                    Updated {new Date(company.ai_summary_updated_at).toLocaleDateString()}
+                  </span>
+                )}
               </div>
             )}
 
