@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase'
 import './CompaniesPage.css'
 
 const SORT_OPTIONS = [
+  { value: 'name', label: 'A–Z' },
   { value: 'avg_overall', label: 'Top Rated' },
   { value: 'review_count', label: 'Most Reviewed' },
 ]
@@ -15,7 +16,7 @@ export default function CompaniesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [query, setQuery] = useState(searchParams.get('q') || '')
   const [industry, setIndustry] = useState('all')
-  const [sortBy, setSortBy] = useState('avg_overall')
+  const [sortBy, setSortBy] = useState('name')
   const [companies, setCompanies] = useState([])
   const [industries, setIndustries] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,6 +27,8 @@ export default function CompaniesPage() {
     supabase
       .from('companies')
       .select('industry')
+      .not('industry', 'is', null)
+      .limit(10000)
       .then(({ data }) => {
         const unique = [...new Set((data || []).map((c) => c.industry).filter(Boolean))].sort()
         setIndustries(unique)
@@ -41,11 +44,12 @@ export default function CompaniesPage() {
 
   const fetchCompanies = async () => {
     setLoading(true)
+    const ascending = sortBy === 'name'
     let q = supabase
       .from('companies')
       .select('id, name, slug, industry, website, review_count, avg_overall')
-      .order(sortBy, { ascending: false })
-      .limit(200)
+      .order(sortBy, { ascending, nullsFirst: false })
+      .limit(500)
 
     if (query.trim()) q = q.ilike('name', `%${query.trim()}%`)
     if (industry !== 'all') q = q.eq('industry', industry)

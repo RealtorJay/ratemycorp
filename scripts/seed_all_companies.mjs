@@ -16,6 +16,7 @@ import { CONTROVERSIAL_COMPANIES } from './data/companies_controversial.mjs'
 import { RETAIL_COMPANIES } from './data/companies_retail.mjs'
 import { PLATFORM_COMPANIES } from './data/companies_platforms.mjs'
 import { MISC_COMPANIES } from './data/companies_misc.mjs'
+import { REALESTATE_COMPANIES } from './data/companies_realestate.mjs'
 import { COMPANY_SCANDALS } from './data/company_scandals.mjs'
 import { REVIEWS_ENVIRONMENTAL, REVIEWS_LABOR, REVIEWS_LEGAL, REVIEWS_CONSUMER, REVIEWS_LOBBYING } from './data/company_reviews.mjs'
 
@@ -44,7 +45,7 @@ const seen = new Set()
 for (const list of [
   TECH_COMPANIES, FINANCE_COMPANIES, PHARMA_COMPANIES, DEFENSE_COMPANIES,
   ENERGY_COMPANIES, FOOD_COMPANIES, CONTROVERSIAL_COMPANIES, RETAIL_COMPANIES,
-  PLATFORM_COMPANIES, MISC_COMPANIES
+  PLATFORM_COMPANIES, MISC_COMPANIES, REALESTATE_COMPANIES
 ]) {
   for (const c of list) {
     if (!seen.has(c.slug)) {

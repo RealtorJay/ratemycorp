@@ -1,0 +1,20 @@
+{
+  "name": "ratemycorp-agents",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI-powered agentic workflows for RateMyCorps data ingestion",
+  "scripts": {
+    "start": "node orchestrator.mjs",
+    "congress": "node orchestrator.mjs congress",
+    "promises": "node orchestrator.mjs promises",
+    "companies": "node orchestrator.mjs companies",
+    "connections": "node orchestrator.mjs connections",
+    "financial": "node orchestrator.mjs financial"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@supabase/supabase-js": "^2.98.0",
+    "dotenv": "^16.4.7",
+    "node-cron": "^3.0.3"
+  }
+}
