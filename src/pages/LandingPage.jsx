@@ -4,6 +4,7 @@ import NavBar from '../components/NavBar'
 import Stars from '../components/Stars'
 import CompanyLogo from '../components/CompanyLogo'
 import FollowButton from '../components/FollowButton'
+import NewsletterSignup from '../components/NewsletterSignup'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import './LandingPage.css'
@@ -312,8 +313,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Newsletter */}
       <section className="section cta-section">
+        <div className="section-inner cta-inner">
+          <h2 className="cta-title">Weekly corporate accountability reports.</h2>
+          <p className="cta-sub">
+            Get the worst offenders, biggest fines, and latest government actions delivered to your inbox every week. Free.
+          </p>
+          <NewsletterSignup source="landing_cta" />
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section">
         <div className="section-inner cta-inner">
           <h2 className="cta-title">Know something the public should?</h2>
           <p className="cta-sub">

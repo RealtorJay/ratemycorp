@@ -1,0 +1,65 @@
+/* ── Newsletter Signup ── */
+.newsletter-form {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.newsletter-input-wrap {
+  display: flex;
+  gap: 0;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.18s;
+}
+.newsletter-input-wrap:focus-within { border-color: rgba(255,255,255,0.25); }
+
+.newsletter-input {
+  flex: 1;
+  padding: 0.8rem 1.1rem;
+  background: none;
+  border: none;
+  outline: none;
+  color: #e8e8e8;
+  font-size: 0.92rem;
+  font-family: inherit;
+  min-width: 0;
+}
+.newsletter-input::placeholder { color: #404040; }
+
+.newsletter-btn {
+  border-radius: 0;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  flex-shrink: 0;
+  font-size: 0.88rem;
+}
+.newsletter-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.newsletter-note {
+  font-size: 0.72rem;
+  color: #333;
+  margin: 0.75rem 0 0;
+  text-align: center;
+}
+
+.newsletter-error {
+  font-size: 0.82rem;
+  color: #ef4444;
+  margin: 0.5rem 0 0;
+  text-align: center;
+}
+
+.newsletter-success {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(124,58,237,0.12);
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  max-width: 440px;
+  margin: 0 auto;
+}

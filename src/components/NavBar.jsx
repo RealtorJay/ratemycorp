@@ -42,6 +42,7 @@ export default function NavBar() {
           <Link to="/connections" className="nav-link">Connections</Link>
           <Link to="/news" className="nav-link">News</Link>
           <Link to="/federal-data" className="nav-link">Federal Data</Link>
+          <Link to="/pricing" className="nav-link">Pricing</Link>
           {user ? (
             <>
               <Link to="/dashboard" className="nav-link">Dashboard</Link>

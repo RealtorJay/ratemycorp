@@ -16,6 +16,7 @@ import ConnectionsPage from './pages/ConnectionsPage'
 import OnboardingPage from './pages/OnboardingPage'
 import NewsPage from './pages/NewsPage'
 import FederalDataPage from './pages/FederalDataPage'
+import PricingPage from './pages/PricingPage'
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/connections" element={<ConnectionsPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/federal-data" element={<FederalDataPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
           <Route path="/companies/:slug" element={<CompanyDetailPage />} />
           <Route path="/companies/:slug/forum" element={<ForumPage />} />
           <Route path="/companies/:slug/forum/:postId" element={<ForumPostPage />} />
