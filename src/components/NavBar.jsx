@@ -26,10 +26,10 @@ export default function NavBar() {
         <form className="nav-search" onSubmit={handleSearch}>
           <input
             className="nav-search-input"
-            placeholder="Search companies…"
+            placeholder="Search companies & politicians…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            aria-label="Search companies"
+            aria-label="Search companies and politicians"
           />
           <button type="submit" className="nav-search-btn" aria-label="Search">
             <SearchIcon />

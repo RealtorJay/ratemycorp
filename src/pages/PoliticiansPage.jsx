@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import NavBar from '../components/NavBar'
+import SkeletonCard from '../components/SkeletonCard'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../context/AuthContext'
+import { researchAndInsert } from '../lib/autoResearch'
 import './PoliticiansPage.css'
 
 const SORT_OPTIONS = [
@@ -66,12 +69,15 @@ function PoliticianAvatar({ name, party, size = 46 }) {
 
 export default function PoliticiansPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const [query, setQuery] = useState(searchParams.get('q') || '')
   const [chamber, setChamber] = useState('all')
   const [party, setParty] = useState('all')
   const [sortBy, setSortBy] = useState('accountability_score')
   const [politicians, setPoliticians] = useState([])
   const [loading, setLoading] = useState(true)
+  const [researching, setResearching] = useState(false)
   const debounceRef = useRef(null)
 
   useEffect(() => {
@@ -82,6 +88,7 @@ export default function PoliticiansPage() {
 
   const fetchPoliticians = async () => {
     setLoading(true)
+    setResearching(false)
     let q = supabase
       .from('politicians')
       .select('id, slug, full_name, party, chamber, state, title, current_office, accountability_score, promise_kept_count, promise_broken_count, promise_total_count, connection_count, in_office')
@@ -94,8 +101,25 @@ export default function PoliticiansPage() {
 
     const { data, error } = await q
     if (error) console.error(error)
-    setPoliticians(data || [])
+    const results = data || []
+    setPoliticians(results)
     setLoading(false)
+
+    // Auto-research: if no results and query is long enough, try Wikidata
+    if (results.length === 0 && query.trim().length >= 3 && user) {
+      setResearching(true)
+      try {
+        const result = await researchAndInsert(query.trim(), supabase)
+        if (result?.type === 'politician') {
+          setPoliticians([result.data])
+        } else if (result?.type === 'company') {
+          navigate(`/companies?q=${encodeURIComponent(query.trim())}`)
+          return
+        }
+      } finally {
+        setResearching(false)
+      }
+    }
   }
 
   const handleQueryChange = (e) => {
@@ -161,9 +185,24 @@ export default function PoliticiansPage() {
 
         {loading ? (
           <div className="politicians-loading">Loading…</div>
+        ) : researching ? (
+          <div className="research-state">
+            <div className="research-header">
+              <span className="research-spinner" />
+              <span>Researching "{query}"…</span>
+            </div>
+            <div className="politicians-grid">
+              {[1, 2, 3].map(i => <SkeletonCard key={i} type="politician" />)}
+            </div>
+          </div>
         ) : politicians.length === 0 ? (
           <div className="politicians-empty">
             <p>No politicians found{query ? ` for "${query}"` : ''}.</p>
+            {query && query.trim().length >= 3 && !user && (
+              <p className="research-signin-hint">
+                <Link to={`/auth?redirect=${encodeURIComponent('/politicians?q=' + query)}`}>Sign in</Link> to auto-discover this politician or company.
+              </p>
+            )}
           </div>
         ) : (
           <div className="politicians-grid">

@@ -1,0 +1,92 @@
+@keyframes skeleton-pulse {
+  0%, 100% { background-color: #1a1a2e; }
+  50% { background-color: #252540; }
+}
+
+.skeleton-pulse {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.skeleton-bar {
+  border-radius: 4px;
+}
+
+.skeleton-arrow {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.skeleton-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+/* Research state header */
+.research-state {
+  animation: fadeUp 0.3s ease both;
+}
+
+.research-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 12px;
+  color: #c084fc;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.research-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  border-top-color: #c084fc;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.research-signin-hint {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.research-signin-hint a {
+  color: #c084fc;
+  text-decoration: underline;
+}

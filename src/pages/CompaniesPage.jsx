@@ -1,9 +1,12 @@
 import { useEffect, useState, useRef } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import Stars from '../components/Stars'
 import CompanyLogo from '../components/CompanyLogo'
+import SkeletonCard from '../components/SkeletonCard'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../context/AuthContext'
+import { researchAndInsert } from '../lib/autoResearch'
 import './CompaniesPage.css'
 
 const SORT_OPTIONS = [
@@ -29,12 +32,15 @@ function generatePageNumbers(current, total) {
 
 export default function CompaniesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const [query, setQuery] = useState(searchParams.get('q') || '')
   const [industry, setIndustry] = useState(searchParams.get('industry') || 'all')
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'name')
   const [companies, setCompanies] = useState([])
   const [industries, setIndustries] = useState([])
   const [loading, setLoading] = useState(true)
+  const [researching, setResearching] = useState(false)
   const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1)
   const [totalCount, setTotalCount] = useState(0)
   const debounceRef = useRef(null)
@@ -76,6 +82,7 @@ export default function CompaniesPage() {
 
   const fetchCompanies = async () => {
     setLoading(true)
+    setResearching(false)
     const ascending = sortBy === 'name'
     const from = (page - 1) * PAGE_SIZE
     const to = from + PAGE_SIZE - 1
@@ -90,9 +97,27 @@ export default function CompaniesPage() {
     if (industry !== 'all') q = q.eq('industry', industry)
 
     const { data, count } = await q
-    setCompanies(data || [])
+    const results = data || []
+    setCompanies(results)
     setTotalCount(count || 0)
     setLoading(false)
+
+    // Auto-research: if no results and query is long enough, try Wikidata
+    if (results.length === 0 && query.trim().length >= 3 && user) {
+      setResearching(true)
+      try {
+        const result = await researchAndInsert(query.trim(), supabase)
+        if (result?.type === 'company') {
+          setCompanies([result.data])
+          setTotalCount(1)
+        } else if (result?.type === 'politician') {
+          navigate(`/politicians?q=${encodeURIComponent(query.trim())}`)
+          return
+        }
+      } finally {
+        setResearching(false)
+      }
+    }
   }
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
@@ -151,9 +176,24 @@ export default function CompaniesPage() {
         {/* Results */}
         {loading ? (
           <div className="companies-loading">Loading…</div>
+        ) : researching ? (
+          <div className="research-state">
+            <div className="research-header">
+              <span className="research-spinner" />
+              <span>Researching "{query}"…</span>
+            </div>
+            <div className="companies-grid">
+              {[1, 2, 3].map(i => <SkeletonCard key={i} type="company" />)}
+            </div>
+          </div>
         ) : companies.length === 0 ? (
           <div className="companies-empty">
             <p>No companies found{query ? ` for "${query}"` : ''}.</p>
+            {query && query.trim().length >= 3 && !user && (
+              <p className="research-signin-hint">
+                <Link to={`/auth?redirect=${encodeURIComponent('/companies?q=' + query)}`}>Sign in</Link> to auto-discover this company or politician.
+              </p>
+            )}
           </div>
         ) : (
           <>
